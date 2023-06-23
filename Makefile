@@ -1,10 +1,14 @@
-ENDPOINT ?= mainnet.eth.streamingfast.io:443
-START_BLOCK ?= 12292922
+ENDPOINT ?= eos.firehose.eosnation.io:9001
+START_BLOCK ?= 12567146
 STOP_BLOCK ?= +10
 
 .PHONY: build
 build:
 	cargo build --target wasm32-unknown-unknown --release
+
+.PHONY: gui
+gui: build
+	substreams gui -e $(ENDPOINT) substreams.yaml map_transfers -s -1
 
 .PHONY: stream
 stream: build

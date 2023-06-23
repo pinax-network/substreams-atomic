@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package antelope.eosio.nfts.v1;
+
+message TransferEvents{
+  repeated TransferEvent items = 1;
+}
+
+message TransferEvent {
+  // trace information
+  string trx_id = 1;
+
+  // contract & scope
+  string contract = 3;
+  string action = 4;
+
+  // data payload
+  //string from = 6;
+  //string to = 7;
+  //repeated uint64 asset_ids = 8;
+  //string memo = 9;
+}
+

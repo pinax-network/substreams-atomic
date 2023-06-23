@@ -1,0 +1,1 @@
+/home/paulm/substreams-test/target/wasm32-unknown-unknown/release/eosio_nfts.wasm: /home/paulm/substreams-test/src/abi.rs /home/paulm/substreams-test/src/lib.rs /home/paulm/substreams-test/src/maps.rs /home/paulm/substreams-test/src/pb/antelope.eosio.nfts.v1.rs
