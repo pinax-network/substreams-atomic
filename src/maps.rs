@@ -13,9 +13,9 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
         for trace in &trx.action_traces {
             let action_trace = trace.action.as_ref().unwrap();
             if action_trace.account != "atomicassets" { continue; }
-            //if action_trace.name != "transfer" { continue; } looking at all the events 
+            if action_trace.name != "transfer" { continue; } // looking only at tranfsers 
 
-            //match abi::Transfer::try_from(action_trace.json_data.as_str()) { // doesn't seem to work for atomicassets abi p
+            //match abi::Transfer::try_from(action_trace.json_data.as_str()) { // doesn't seem to work for atomicassets abi 
                 //Ok(data) => {
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
