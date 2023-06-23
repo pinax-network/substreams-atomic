@@ -1,1 +1,0 @@
-/home/paulm/substreams-test/target/wasm32-unknown-unknown/release/eosio_transfers.wasm: /home/paulm/substreams-test/src/abi.rs /home/paulm/substreams-test/src/lib.rs /home/paulm/substreams-test/src/maps.rs /home/paulm/substreams-test/src/pb/antelope.eosio.transfers.rs /home/paulm/substreams-test/src/utils.rs
