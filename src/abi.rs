@@ -68,17 +68,6 @@ macro_rules! impl_try_from_str {
 }
 //type ATOMICATTRIBUTE = VariantInt8Int16Int32Int64Uint8Uint16Uint32Uint64Float32Float64StringINT8VECINT16VECINT32VECINT64VECUINT8VECUINT16VECUINT32VECUINT64VECFLOATVECDOUBLEVECSTRINGVEC;
 type ATTRIBUTEMAP = Vec<PairStringATOMICATTRIBUTE>;
-type DOUBLEVEC = Vec<Float64>;
-type FLOATVEC = Vec<Float32>;
-type INT16VEC = Vec<Int16>;
-type INT32VEC = Vec<Int32>;
-type INT64VEC = Vec<Int64>;
-type INT8VEC = Bytes;
-type STRINGVEC = Vec<String>;
-type UINT16VEC = Vec<Uint16>;
-type UINT32VEC = Vec<Uint32>;
-type UINT64VEC = Vec<Uint64>;
-type UINT8VEC = Vec<Uint8>;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -544,7 +533,7 @@ impl_try_from_str!(TokenconfigsS);
 pub struct Transfer {
     pub from: Name,
     pub to: Name,
-    pub asset_ids: Vec<Uint64>,
+    pub asset_ids: Vec<String>,
     pub memo: String,
 }
 impl_try_from_str!(Transfer);

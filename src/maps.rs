@@ -12,27 +12,29 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
         // action traces
         for trace in &trx.action_traces {
             let action_trace = trace.action.as_ref().unwrap();
-            if action_trace.account != "atomicassets" { continue; }
-            if action_trace.name != "transfer" { continue; } // looking only at tranfsers 
-
-            //match abi::Transfer::try_from(action_trace.json_data.as_str()) { // doesn't seem to work for atomicassets abi 
-                //Ok(data) => {
+            if action_trace.account != "atomicassets" && action_trace.name != "transfer" { continue; }
+            match abi::Transfer::try_from(action_trace.json_data.as_str()) {
+                Ok(data) => {
+                    let converted_asset_ids: Vec<u64> = data.asset_ids
+                        .iter()
+                        .map(|s| s.parse::<u64>().unwrap())
+                        .collect();
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
 
                         // contract & scope
-                        contract: action_trace.account.clone(),
-                        action: action_trace.name.clone(),
+                        // contract: action_trace.account.clone(),
+                        // action: action_trace.name.clone(),
                         // payload
-                        //from: data.from,
-                        //to: data.to,
-                        //asset_ids: data.asset_ids,
-                        //memo: data.memo,
+                        from: data.from,
+                        to: data.to,
+                        asset_ids: converted_asset_ids,
+                        memo: data.memo,
                     });
                 }
-                //Err(_) => continue,
-          //  }
-        //}
+                Err(_) => continue,
+           }
+        }
     }
     Ok(TransferEvents { items: response })
 }
