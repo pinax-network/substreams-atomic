@@ -20,4 +20,4 @@ modules:
     inputs:
       - source: sf.antelope.type.v1.Block
     output:
-      type: proto:antelope.eosio.nfts.v1.Transfers
+      type: proto:antelope.eosio.nfts.v1.TransferEvents
