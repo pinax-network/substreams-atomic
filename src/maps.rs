@@ -23,17 +23,13 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
 
-                        // contract & scope
-                        // contract: action_trace.account.clone(),
-                        // action: action_trace.name.clone(),
-                        // payload
                         from: data.from,
                         to: data.to,
                         asset_ids: converted_asset_ids,
                         memo: data.memo,
                     });
                 }
-                Err(_) => continue,
+                Err(_) => panic!("Failed to decode atomicassets::transfer"),
            }
         }
     }

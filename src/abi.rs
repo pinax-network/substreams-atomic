@@ -399,7 +399,7 @@ pub struct Logtransfer {
     pub collection_name: Name,
     pub from: Name,
     pub to: Name,
-    pub asset_ids: Vec<Uint64>,
+    pub asset_ids: Vec<String>,
     pub memo: String,
 }
 impl_try_from_str!(Logtransfer);
