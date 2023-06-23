@@ -5,7 +5,13 @@
 make
 make gui
 ```
+### Mermaid graph
 
+```mermaid
+graph TD;
+  map_transfers[map: map_transfers];
+  sf.antelope.type.v1.Block[source: sf.antelope.type.v1.Block] --> map_transfers;
+```
 ## Modules
 ```yaml
 Package name: eosio_nfts
