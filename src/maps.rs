@@ -12,9 +12,9 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
         // action traces
         for trace in &trx.action_traces {
             let action_trace = trace.action.as_ref().unwrap();
-            if trace.receiver != "atomicassets" {continue}
-            if action_trace.account != "atomicassets" && action_trace.name != "transfer" { continue; }
-            match abi::Transfer::try_from(action_trace.json_data.as_str()) {
+            if action_trace.account != trace.receiver {continue}
+            if action_trace.name != "logtransfer" { continue; }
+            match abi::Logtransfer::try_from(action_trace.json_data.as_str()) {
                 Ok(data) => {
                     let converted_asset_ids: Vec<u64> = data.asset_ids
                         .iter()
@@ -22,7 +22,8 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
                         .collect();
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
-
+                        
+                        collection_name: data.collection_name,
                         from: data.from,
                         to: data.to,
                         asset_ids: converted_asset_ids,
