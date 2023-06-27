@@ -1,4 +1,5 @@
-# Substream for EOS NFTs
+# Substream for Antelope NFTs
+Antelope NFTs transfers
 
 ## Quick Start
 ```bash
