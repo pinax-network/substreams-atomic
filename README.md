@@ -5,6 +5,7 @@ Antelope NFTs transfers
 ```bash
 make
 make gui
+make schema
 ```
 ### Mermaid graph
 
@@ -12,6 +13,8 @@ make gui
 graph TD;
   map_transfers[map: map_transfers];
   sf.antelope.type.v1.Block[source: sf.antelope.type.v1.Block] --> map_transfers;
+  map_schemas[map: map_schemas];
+  sf.antelope.type.v1.Block[source: sf.antelope.type.v1.Block] --> map_schemas
 ```
 ## Modules
 ```yaml
@@ -23,4 +26,8 @@ Modules:
 Name: map_transfers
 Kind: map
 Output Type: proto:antelope.eosio.nfts.v1.TransferEvents
+
+Name: map_schemas
+Kind: map
+Output Type: proto:antelope.eosio.nfts.v1.SchemaEvents
 ```
