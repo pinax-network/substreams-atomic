@@ -21,3 +21,10 @@ modules:
       - source: sf.antelope.type.v1.Block
     output:
       type: proto:antelope.eosio.nfts.v1.TransferEvents
+
+  - name: map_schemas
+    kind: map
+    inputs:
+      - source: sf.antelope.type.v1.Block
+    output:
+      type: proto:antelope.eosio.nfts.v1.SchemaEvents

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package antelope.eosio.nfts.v1;
 
-message TransferEvents{
+message TransferEvents {
   repeated TransferEvent items = 1;
 }
 
@@ -19,6 +19,25 @@ message TransferEvent {
   string from = 6;
   string to = 7;
   repeated uint64 asset_ids = 8;
-  string memo = 9;
+  //string memo = 9;
 }
 
+message SchemaEvents {
+  repeated SchemaEvent items = 1;
+}
+
+message SchemaEvent {
+  // trace information
+  string trx_id = 1;
+
+  // data payload
+  string authorized_creator = 2;
+  string collection_name = 3;
+  string schema_name = 4;
+  repeated Format schema_format = 5;  
+}
+
+message Format {
+  string name = 1;
+  string dtype = 2;
+}

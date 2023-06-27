@@ -1,0 +1,539 @@
+cargo build --target wasm32-unknown-unknown --release
+substreams run -e eos.firehose.eosnation.io:9001 substreams.yaml map_transfers -s 316729079 -t +1000
+TraceID: c5ff9a2d9b308ee0f3adccf8613f54c4
+{
+  "@module": "map_transfers",
+  "@block": 316729079,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "bf581cfacce984a4dd0674cf7ab42024af6fd44e91c5432f996d4953a70c10e7",
+        "collectionName": "railnationgo",
+        "from": "womplayitems",
+        "to": "mstafa12.ftw",
+        "assetIds": ["2199024469921"],
+        "memo": "You have been awarded an NFT"
+      },
+      {
+        "trxId": "3eb3927e0dde51f7131b9cd2991b2746b5b88b563c9372d88342c0c20fd2764b",
+        "collectionName": "railnationgo",
+        "from": "supermm.ftw",
+        "to": "atomicmarket",
+        "assetIds": ["2199024484146"],
+        "memo": "Accepted Offer ID: 2226342"
+      },
+      {
+        "trxId": "3eb3927e0dde51f7131b9cd2991b2746b5b88b563c9372d88342c0c20fd2764b",
+        "collectionName": "railnationgo",
+        "from": "atomicmarket",
+        "to": "bistran.ftw",
+        "assetIds": ["2199024484146"],
+        "memo": "AtomicMarket Purchased Sale - ID # 2222373"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729190,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "a4bd6be9b1404dc289ff0fea371ec396841b564257cb2bfaefab021176f29160",
+        "collectionName": "womplayextra",
+        "from": "womplayitems",
+        "to": "mrn1c3.ftw",
+        "assetIds": ["2199025469343"],
+        "memo": "You have been awarded an NFT"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729220,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "a5185f021072c1bda73766556dbda23040bd20b3b400e610ed01823b3d631a55",
+        "collectionName": "railnationgo",
+        "from": "mstafa12.ftw",
+        "to": "wombatmaster",
+        "assetIds": ["2199024469921"]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729439,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "d3343ff9f7c43132e8bf28f0443409b8a09224076bd0d1d291c600fda87519d6",
+        "collectionName": "womplayextra",
+        "from": "rudihaha.ftw",
+        "to": "atomicmarket",
+        "assetIds": ["2199025551006"],
+        "memo": "Accepted Offer ID: 2236236"
+      },
+      {
+        "trxId": "d3343ff9f7c43132e8bf28f0443409b8a09224076bd0d1d291c600fda87519d6",
+        "collectionName": "womplayextra",
+        "from": "atomicmarket",
+        "to": "titiduti1234",
+        "assetIds": ["2199025551006"],
+        "memo": "AtomicMarket Purchased Sale - ID # 2232227"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729453,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "f7581fd6a7df54e03d2bd99e7956605425892110dafa1139032e95d3aefce95e",
+        "collectionName": "womplayextra",
+        "from": "trchabeograd",
+        "to": "atomicmarket",
+        "assetIds": ["2199024992446"],
+        "memo": "Accepted Offer ID: 2236227"
+      },
+      {
+        "trxId": "f7581fd6a7df54e03d2bd99e7956605425892110dafa1139032e95d3aefce95e",
+        "collectionName": "womplayextra",
+        "from": "atomicmarket",
+        "to": "titiduti1234",
+        "assetIds": ["2199024992446"],
+        "memo": "AtomicMarket Purchased Sale - ID # 2232218"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729465,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "99aa28e8ecce53f0c6da069f4257b5bc7910d2b2415ceca2edea2ba85b78c5e9",
+        "collectionName": "womplayextra",
+        "from": "rudihaha.ftw",
+        "to": "atomicmarket",
+        "assetIds": ["2199025520741"],
+        "memo": "Accepted Offer ID: 2236240"
+      },
+      {
+        "trxId": "99aa28e8ecce53f0c6da069f4257b5bc7910d2b2415ceca2edea2ba85b78c5e9",
+        "collectionName": "womplayextra",
+        "from": "atomicmarket",
+        "to": "titiduti1234",
+        "assetIds": ["2199025520741"],
+        "memo": "AtomicMarket Purchased Sale - ID # 2232231"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729477,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "44decca181be7bbc4aba620059d432e021f1cd2dd0d42cbbae77e2bbef8ed1a2",
+        "collectionName": "womplayextra",
+        "from": "rco55.ftw",
+        "to": "atomicmarket",
+        "assetIds": ["2199024665948"],
+        "memo": "Accepted Offer ID: 2236225"
+      },
+      {
+        "trxId": "44decca181be7bbc4aba620059d432e021f1cd2dd0d42cbbae77e2bbef8ed1a2",
+        "collectionName": "womplayextra",
+        "from": "atomicmarket",
+        "to": "titiduti1234",
+        "assetIds": ["2199024665948"],
+        "memo": "AtomicMarket Purchased Sale - ID # 2232216"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729489,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "5d78e2932c3077e9d36488b0fda500942c1caeec1cdaf322942e8a20f3e1dcc0",
+        "collectionName": "womplayextra",
+        "from": "hojjatghanba",
+        "to": "atomicmarket",
+        "assetIds": ["2199024957272"],
+        "memo": "Accepted Offer ID: 2236233"
+      },
+      {
+        "trxId": "5d78e2932c3077e9d36488b0fda500942c1caeec1cdaf322942e8a20f3e1dcc0",
+        "collectionName": "womplayextra",
+        "from": "atomicmarket",
+        "to": "titiduti1234",
+        "assetIds": ["2199024957272"],
+        "memo": "AtomicMarket Purchased Sale - ID # 2232224"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729552,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "bfad395cdef881f0afcfff4b172599bf18154cfd1133128d3982bb0782c97d24",
+        "collectionName": "chessunivers",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": [
+          "2199025082095",
+          "2199025080696",
+          "2199025059895",
+          "2199025041026",
+          "2199025013046",
+          "2199025008861"
+        ]
+      },
+      {
+        "trxId": "bfad395cdef881f0afcfff4b172599bf18154cfd1133128d3982bb0782c97d24",
+        "collectionName": "kingsthrones",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": ["2199023669031"]
+      },
+      {
+        "trxId": "bfad395cdef881f0afcfff4b172599bf18154cfd1133128d3982bb0782c97d24",
+        "collectionName": "tastytalenft",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": ["2199024822292", "2199024817536"]
+      },
+      {
+        "trxId": "bfad395cdef881f0afcfff4b172599bf18154cfd1133128d3982bb0782c97d24",
+        "collectionName": "womplayextra",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": [
+          "2199025529254",
+          "2199025487670",
+          "2199025478203",
+          "2199025477307",
+          "2199025467925",
+          "2199025143198"
+        ]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729571,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "919d7ceb26057d2547b1820988a4b51ae37d9b939190e258121c413ae8a4fdba",
+        "collectionName": "arkheimatwar",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": ["2199023619802"]
+      },
+      {
+        "trxId": "919d7ceb26057d2547b1820988a4b51ae37d9b939190e258121c413ae8a4fdba",
+        "collectionName": "tastytalenft",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": ["2199024769504", "2199023485106"]
+      },
+      {
+        "trxId": "919d7ceb26057d2547b1820988a4b51ae37d9b939190e258121c413ae8a4fdba",
+        "collectionName": "uplandislive",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": ["2199023397990"]
+      },
+      {
+        "trxId": "919d7ceb26057d2547b1820988a4b51ae37d9b939190e258121c413ae8a4fdba",
+        "collectionName": "womplayextra",
+        "from": "wombatmaster",
+        "to": "artemjo.ftw",
+        "assetIds": ["2199024710212", "2199024703513"]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729583,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "e495f47fee61163855a4b32106db92af852dedce077e15f24fef9288c8efdd6d",
+        "collectionName": "womplayextra",
+        "from": "mrn1c3.ftw",
+        "to": "wombatmaster",
+        "assetIds": ["2199025469343"]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729587,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "14691aa0711a8cb70ca68d5ab01bb154a9d1384c5b4358ddb5cc8d00aa14634c",
+        "collectionName": "womplayextra",
+        "from": "antowey25225",
+        "to": "atomicmarket",
+        "assetIds": ["2199024999393"],
+        "memo": "Accepted Offer ID: 2235806"
+      },
+      {
+        "trxId": "14691aa0711a8cb70ca68d5ab01bb154a9d1384c5b4358ddb5cc8d00aa14634c",
+        "collectionName": "womplayextra",
+        "from": "atomicmarket",
+        "to": "titiduti1234",
+        "assetIds": ["2199024999393"],
+        "memo": "AtomicMarket Purchased Sale - ID # 2231797"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729635,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "37d8d24a22b3e302713760549a0980e7879b86fcbaf0d5901ae145a5a3e9f1df",
+        "collectionName": "womplayextra",
+        "from": "titiduti1234",
+        "to": "wombatblends",
+        "assetIds": [
+          "2199025520741",
+          "2199024957272",
+          "2199024665948",
+          "2199024992446",
+          "2199024999393",
+          "2199025551006"
+        ],
+        "memo": "womplayextra:2772"
+      },
+      {
+        "trxId": "37d8d24a22b3e302713760549a0980e7879b86fcbaf0d5901ae145a5a3e9f1df",
+        "collectionName": "womplayextra",
+        "from": "wombatblends",
+        "to": "titiduti1234",
+        "assetIds": ["2199025597030"],
+        "memo": "Thanks for blending with Wombat"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729805,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "461815150d0586376de5c2f1ef8ae963fdd4ad7b4e51cef9ecd7475cce4041fc",
+        "collectionName": "womplayextra",
+        "from": "womplayitems",
+        "to": "4gabriel.ftw",
+        "assetIds": ["2199025498510"],
+        "memo": "You have been awarded an NFT"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729815,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "639cff83dc73093aa0585ba43bc779ac0360b163d02c1e1c78d3b42f33de8237",
+        "collectionName": "tastytalenft",
+        "from": "womplayitems",
+        "to": "lukynhas3211",
+        "assetIds": ["2199024738090"],
+        "memo": "You have been awarded an NFT"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729835,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "fe67e45086761a35777a7f24f30e0bdf3ec82a52cecc4e604f8bf0324b5a5d52",
+        "collectionName": "tastytalenft",
+        "from": "wombatmaster",
+        "to": "witalij12344",
+        "assetIds": ["2199024027263"]
+      },
+      {
+        "trxId": "fe67e45086761a35777a7f24f30e0bdf3ec82a52cecc4e604f8bf0324b5a5d52",
+        "collectionName": "womplayextra",
+        "from": "wombatmaster",
+        "to": "witalij12344",
+        "assetIds": ["2199024680537"]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729916,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "e7f2fff16f0da1d34b9d6506a72b1fc4300eeb10aa6655d178dfdc281cb5e881",
+        "collectionName": "womplayextra",
+        "from": "womplayitems",
+        "to": "tone4.ftw",
+        "assetIds": ["2199025502102"],
+        "memo": "You have been awarded an NFT"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729959,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "d0dbaeff647f5f1a7bad758c4fd309e52a54d2a4a1914ab6f45ffb82b2aa07b2",
+        "collectionName": "womplayextra",
+        "from": "womplayitems",
+        "to": "kmcduffie111",
+        "assetIds": ["2199025475670"],
+        "memo": "You have been awarded an NFT"
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316729973,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "7c86afa954d0000ab2d707bd7b6d530a710c7c3bc24dae721daff16f9ba2877b",
+        "collectionName": "womplayextra",
+        "from": "witalij12344",
+        "to": "wombatmaster",
+        "assetIds": ["2199025277001"]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316730003,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "86d9d01eb6b7f4a50e95ca48a44f03e725c7e91ae3b470ad05e0c1aa13fc63d4",
+        "collectionName": "womplayextra",
+        "from": "dcrypt22.ftw",
+        "to": "wombatmaster",
+        "assetIds": ["2199023545057", "2199025545643"]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316730009,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "c49fb9ad20cdf20e373cc0af0f11c8c54ee37b9baf5e5e92ce7d4e88dbb02a3a",
+        "collectionName": "wombatprimex",
+        "from": "nunezbr.ftw",
+        "to": "wombatmaster",
+        "assetIds": ["2199025595989", "2199025596513", "2199025595562"]
+      }
+    ]
+  }
+}
+
+{
+  "@module": "map_transfers",
+  "@block": 316730058,
+  "@type": "antelope.eosio.nfts.v1.TransferEvents",
+  "@data": {
+    "items": [
+      {
+        "trxId": "25efd3e243752398246154d23fd3e83b53acd05f565953be9a9c9bfa942b2fbe",
+        "collectionName": "womplayextra",
+        "from": "nunezbr.ftw",
+        "to": "wombatmaster",
+        "assetIds": [
+          "2199024609473",
+          "2199025483805",
+          "2199025533997",
+          "2199024975190",
+          "2199024975161"
+        ]
+      }
+    ]
+  }
+}
+
+all done
