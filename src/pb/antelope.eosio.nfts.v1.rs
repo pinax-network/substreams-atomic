@@ -56,4 +56,21 @@ pub struct Format {
     #[prost(string, tag="2")]
     pub dtype: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Collections {
+    #[prost(message, repeated, tag="1")]
+    pub items: ::prost::alloc::vec::Vec<Collection>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Collection {
+    /// trace information
+    #[prost(string, tag="1")]
+    pub trx_id: ::prost::alloc::string::String,
+    #[prost(uint32, tag="2")]
+    pub action_index: u32,
+    #[prost(string, tag="5")]
+    pub action: ::prost::alloc::string::String,
+}
 // @@protoc_insertion_point(module)
