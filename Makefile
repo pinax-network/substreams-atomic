@@ -1,5 +1,13 @@
 ENDPOINT ?= eos.firehose.eosnation.io:9001
 STARTBLOCK ?= 316729079
+
+.PHONY: all
+all:
+	make build
+	substreams pack
+	substreams graph
+	substreams info
+
 .PHONY: build
 build:
 	cargo build --target wasm32-unknown-unknown --release
@@ -12,8 +20,8 @@ gui: build
 stream: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_transfers -s $(STARTBLOCK) -t +1000
 
-.PHONY: codegen
-codegen:
+.PHONY: protogen
+protogen:
 	substreams protogen ./substreams.yaml --exclude-paths="sf/substreams,google"
 
 .PHONY: schema

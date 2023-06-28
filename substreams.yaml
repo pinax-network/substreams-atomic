@@ -1,18 +1,18 @@
 specVersion: v0.1.0
 package:
-  name: "eosio_nfts"
+  name: "atomicassets"
   version: v0.1.0
 
 protobuf:
   files:
-    - eosio.nfts.proto
+    - atomicassets.proto
   importPaths:
     - ./proto
 
 binaries:
   default:
     type: wasm/rust-v1
-    file: ./target/wasm32-unknown-unknown/release/eosio_nfts.wasm
+    file: ./target/wasm32-unknown-unknown/release/atomicassets.wasm
 
 modules:
   - name: map_transfers
@@ -20,11 +20,11 @@ modules:
     inputs:
       - source: sf.antelope.type.v1.Block
     output:
-      type: proto:antelope.eosio.nfts.v1.TransferEvents
+      type: proto:antelope.atomicassets.v1.TransferEvents
 
   - name: map_schemas
     kind: map
     inputs:
       - source: sf.antelope.type.v1.Block
     output:
-      type: proto:antelope.eosio.nfts.v1.SchemaEvents
+      type: proto:antelope.atomicassets.v1.SchemaEvents

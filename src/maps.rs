@@ -2,7 +2,7 @@ use substreams::errors::Error;
 use substreams_antelope::Block;
 
 use crate::abi;
-use crate::eosio_nfts::*;
+use crate::atomicassets::*;
 
 #[substreams::handlers::map]
 fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
@@ -22,7 +22,6 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
                         .collect();
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
-                        
                         collection_name: data.collection_name,
                         from: data.from,
                         to: data.to,

@@ -1,7 +1,7 @@
-#[path = "pb/antelope.eosio.nfts.v1.rs"]
+#[path = "pb/antelope.atomicassets.v1.rs"]
 #[allow(dead_code)]
-pub mod eosio_nfts;
-pub use self::eosio_nfts::*;
+pub mod atomicassets;
+pub use self::atomicassets::*;
 
 mod abi;
 mod maps;

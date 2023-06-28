@@ -1,3 +1,6 @@
 replay.log
 target/
 replay.log
+result.json
+Cargo.lock
+*.spkg
