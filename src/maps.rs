@@ -72,3 +72,45 @@ fn map_schemas(block: Block) -> Result<SchemaEvents, Error> {
     }
     Ok(SchemaEvents { items: response })
 }
+
+#[substreams::handlers::map]
+fn map_collections(block: Block) -> Result<Collections, Error> {
+    let mut items = vec![];
+
+    for trx in block.all_transaction_traces() {
+        for db_op in &trx.db_ops {
+            if db_op.table_name != "collections" { continue; }
+            let contract = db_op.scope.clone();
+
+
+            // Looks like old and new data is always none
+            let old_data = abi::CollectionsS::try_from(db_op.old_data_json.as_str()).ok();
+            let new_data = abi::CollectionsS::try_from(db_op.new_data_json.as_str()).ok();
+
+            // comment below line if you want to see any transaction appearing
+            if old_data.is_none() && new_data.is_none() { continue; } // no data
+
+            let action = match db_op.operation{
+                0 => "Unknown",
+                1 => "Insert",
+                2 => "Update",
+                3 => "Remove",
+                _ => "Error",
+            };
+            
+            items.push(Collection {
+                // trace information
+                trx_id: trx.id.clone(),
+                action_index: db_op.action_index,
+
+                // db operation 
+                action: action.to_string(),
+
+                // payload
+                //collection_name: new_name.expect("REASON").to_string(),
+                
+            });
+        }
+    }
+    Ok(Collections { items })
+}

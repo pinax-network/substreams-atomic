@@ -27,3 +27,10 @@ protogen:
 .PHONY: schema
 schema: build
 	substreams gui -e $(ENDPOINT) substreams.yaml map_schemas -s 317182530 -t +10
+
+# Here are some several blocks containing an event on collections table \
+block 313817420 contains update, addcolauth action, transaction 69012608211c5aa0bb6798efd7bec5c2d69072aa2cdbefb42c993a8f5ebf5614 \
+block 316857083 contains insert, createcol action, transaction c77036efe5d133fc78dae8829ab59413761ac055eacf478e2241e0265fa5f73f
+.PHONY: collection
+collection: build
+	substreams run -e $(ENDPOINT) substreams.yaml map_collections -s 313817420  -t +1

@@ -41,3 +41,24 @@ message Format {
   string name = 1;
   string dtype = 2;
 }
+
+message Collections {
+  repeated Collection items = 1;
+}
+
+message Collection {
+  // trace information
+  string trx_id = 1;
+  uint32 action_index = 2;
+
+  string action = 5;
+
+  // data payload
+  //string collection_name = 3;
+  //string author = 4;
+  //bool allow_notify = 5;
+  //repeated string authorized_accounts = 6;
+  //repeated string notify_accounts = 7;
+  //double market_fee = 8;
+  //repeated uint32 serialized_data = 9;
+}
