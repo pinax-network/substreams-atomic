@@ -42,6 +42,22 @@ message Format {
   string dtype = 2;
 }
 
+message Schemas {
+  repeated Schema items = 1;
+}
+
+message Schema {
+  // trace information
+  string trx_id = 1;
+  uint32 action_index = 2;
+
+  // database operation
+  string action = 3;
+  // data payload
+  string schema_name = 4;
+  repeated Format format = 5;
+}
+
 message Collections {
   repeated Collection items = 1;
 }

@@ -24,9 +24,9 @@ stream: build
 protogen:
 	substreams protogen ./substreams.yaml --exclude-paths="sf/substreams,google"
 
-.PHONY: schema
-schema: build
-	substreams gui -e $(ENDPOINT) substreams.yaml map_schemas -s 317182530 -t +10
+.PHONY: schema_events
+schema_events: build
+	substreams gui -e $(ENDPOINT) substreams.yaml map_schema_events -s 317182530 -t +10
 
 # Here are some several blocks containing an event on collections table \
 block 313817420 contains update, addcolauth action, transaction 69012608211c5aa0bb6798efd7bec5c2d69072aa2cdbefb42c993a8f5ebf5614 \
@@ -38,3 +38,7 @@ collection: build
 .PHONY: template
 template: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_templates -s 317648437  -t +1
+
+.PHONY: schema
+schema: build
+	substreams run -e $(ENDPOINT) substreams.yaml map_schemas -s 317377836  -t +1

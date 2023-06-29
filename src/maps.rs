@@ -38,7 +38,7 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
 }
 
 #[substreams::handlers::map]
-fn map_schemas(block: Block) -> Result<SchemaEvents, Error> {
+fn map_schema_events(block: Block) -> Result<SchemaEvents, Error> {
     let mut response = vec![];
 
     for trx in block.all_transaction_traces() {
@@ -81,7 +81,6 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
     for trx in block.all_transaction_traces() {
         for db_op in &trx.db_ops {
             if db_op.table_name != "collections" { continue; }
-            let contract = db_op.scope.clone();
 
             let old_data = abi::CollectionsS::try_from(db_op.old_data_json.as_str()).ok();
             let new_data = abi::CollectionsS::try_from(db_op.new_data_json.as_str()).ok();
@@ -177,7 +176,6 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
     for trx in block.all_transaction_traces() {
         for db_op in &trx.db_ops {
             if db_op.table_name != "templates" { continue; }
-            let contract = db_op.scope.clone();
 
             let new_data = match abi::TemplatesS::try_from(db_op.new_data_json.as_str()){
                 Ok(data) => data,
@@ -214,4 +212,51 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
         }
     }
     Ok(Templates { items })
+}
+
+#[substreams::handlers::map]
+fn map_schemas(block: Block) -> Result<Schemas, Error> {
+    let mut items = vec![];
+
+    for trx in block.all_transaction_traces() {
+        for db_op in &trx.db_ops {
+            if db_op.table_name != "schemas" { continue; }
+
+            let new_data = match abi::SchemasS::try_from(db_op.new_data_json.as_str()){
+                Ok(data) => data,
+                Err(error) => panic!("new data not decoded: {}", error),
+            };
+            //let old_data = abi::TemplatesS::try_from(db_op.old_data_json.as_str()).ok();
+            //let new_data = abi::TemplatesS::try_from(db_op.new_data_json.as_str()).ok();
+            //if old_data.is_none() && new_data.is_none() { continue; } // no data
+            
+            let action = match db_op.operation{
+                0 => "Unknown",
+                1 => "Insert",
+                2 => "Update",
+                3 => "Remove",
+                _ => "Error",
+            };
+            let mut format = vec![];
+            for f in &new_data.format {
+                format.push(Format {
+                    name: f.name.clone(),
+                    dtype: f.r#type.clone(),
+                });
+            }
+            items.push(Schema {
+                // trace information
+                trx_id: trx.id.clone(),
+                action_index: db_op.action_index,
+
+                // db operation 
+                action: action.to_string(),
+
+                // data payload
+                schema_name: new_data.schema_name.clone(),
+                format: format,
+            });
+        }
+    }
+    Ok(Schemas { items })
 }

@@ -22,7 +22,7 @@ modules:
     output:
       type: proto:antelope.atomicassets.v1.TransferEvents
 
-  - name: map_schemas
+  - name: map_schema_events
     kind: map
     inputs:
       - source: sf.antelope.type.v1.Block
@@ -42,3 +42,10 @@ modules:
       - source: sf.antelope.type.v1.Block
     output:
       type: proto:antelope.atomicassets.v1.Templates
+
+  - name: map_schemas
+    kind: map
+    inputs:
+      - source: sf.antelope.type.v1.Block
+    output:
+      type: proto:antelope.atomicassets.v1.Schemas
