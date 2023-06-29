@@ -87,8 +87,5 @@ pub struct Collection {
     pub market_fee: f64,
     #[prost(uint32, repeated, tag="10")]
     pub serialized_data: ::prost::alloc::vec::Vec<u32>,
-    /// extra
-    #[prost(string, repeated, tag="11")]
-    pub authorized_accounts_delta: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 // @@protoc_insertion_point(module)
