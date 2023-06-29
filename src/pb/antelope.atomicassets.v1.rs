@@ -70,7 +70,25 @@ pub struct Collection {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(uint32, tag="2")]
     pub action_index: u32,
-    #[prost(string, tag="5")]
+    #[prost(string, tag="3")]
     pub action: ::prost::alloc::string::String,
+    /// data payload
+    #[prost(string, tag="4")]
+    pub collection_name: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub author: ::prost::alloc::string::String,
+    #[prost(bool, tag="6")]
+    pub allow_notify: bool,
+    #[prost(string, repeated, tag="7")]
+    pub authorized_accounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag="8")]
+    pub notify_accounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(double, tag="9")]
+    pub market_fee: f64,
+    #[prost(uint32, repeated, tag="10")]
+    pub serialized_data: ::prost::alloc::vec::Vec<u32>,
+    /// extra
+    #[prost(string, repeated, tag="11")]
+    pub authorized_accounts_delta: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 // @@protoc_insertion_point(module)

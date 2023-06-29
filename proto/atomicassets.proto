@@ -51,14 +51,17 @@ message Collection {
   string trx_id = 1;
   uint32 action_index = 2;
 
-  string action = 5;
+  string action = 3;
 
   // data payload
-  //string collection_name = 3;
-  //string author = 4;
-  //bool allow_notify = 5;
-  //repeated string authorized_accounts = 6;
-  //repeated string notify_accounts = 7;
-  //double market_fee = 8;
-  //repeated uint32 serialized_data = 9;
+  string collection_name = 4;
+  string author = 5;
+  bool allow_notify = 6;
+  repeated string authorized_accounts = 7;
+  repeated string notify_accounts = 8;
+  double market_fee = 9;
+  repeated uint32 serialized_data = 10;
+
+  // extra
+  //repeated string authorized_accounts_delta = 11;
 }

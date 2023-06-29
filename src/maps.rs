@@ -83,20 +83,66 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
             if db_op.table_name != "collections" { continue; }
             let contract = db_op.scope.clone();
 
-
-            // Looks like old and new data is always none
             let old_data = abi::CollectionsS::try_from(db_op.old_data_json.as_str()).ok();
             let new_data = abi::CollectionsS::try_from(db_op.new_data_json.as_str()).ok();
-
-            // comment below line if you want to see any transaction appearing
             if old_data.is_none() && new_data.is_none() { continue; } // no data
-
+            
             let action = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
                 2 => "Update",
                 3 => "Remove",
                 _ => "Error",
+            };
+
+            let collection_name = match &new_data {
+                Some(data) => data.collection_name.clone(),
+                None => "No new data".to_string(),
+            };
+
+            let author = match &new_data {
+                Some(data) => data.author.clone(),
+                None => "No new data".to_string(),
+            };
+
+            let allow_notify = match &new_data {
+                Some(data) => data.allow_notify.clone(),
+                None => false,
+            };
+
+            let old_authorized_accounts = match &old_data {
+                Some(data) => Some(Vec::<String>::from(data.authorized_accounts.clone())),
+                None => None,
+            };
+
+            let new_authorized_accounts = match &new_data {
+                Some(data) => Some(Vec::<String>::from(data.authorized_accounts.clone())),
+                None => None,
+            };
+
+            let authorized_accounts = match new_authorized_accounts.is_some() {
+                true => new_authorized_accounts.unwrap(),
+                false => [].to_vec(),
+            };
+
+            //let authorized_accounts_delta = match old_authorized_accounts.is_some() {
+            //    true => authorized_accounts - old_authorized_accounts.unwrap(),
+            //    false => authorized_accounts, 
+            //};
+
+            let notify_accounts = match &new_data {
+                Some(data) => data.notify_accounts.clone(),
+                None => [].to_vec(),
+            };
+
+            let market_fee = match &new_data {
+                Some(data) => data.market_fee.clone(),
+                None => 0.0,
+            };
+
+            let serialized_data = match &new_data {
+                Some(data) => data.serialized_data.clone(),
+                None => [].to_vec(),
             };
 
             items.push(Collection {
@@ -108,7 +154,16 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
                 action: action.to_string(),
 
                 // payload
-                //collection_name: new_name.expect("REASON").to_string(),
+                collection_name: collection_name,
+                author: author,
+                allow_notify: allow_notify,
+                authorized_accounts: authorized_accounts,
+                notify_accounts: notify_accounts,
+                market_fee: market_fee,
+                serialized_data: Vec::<u32>::from(serialized_data),
+
+                //extra
+                //authorized_accounts_delta: authorized_accounts_delta,
             });
         }
     }
