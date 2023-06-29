@@ -15,7 +15,7 @@ type Uint16 = u16;
 type Uint32 = u32;
 type Uint64 = u64;
 type Float32 = String;
-type Float64 = String;
+type Float64 = f64;
 
 fn str_or_i64<'de, D>(deserializer: D) -> Result<i64, D::Error>
 where
@@ -55,6 +55,42 @@ where
     })
 }
 
+fn bool_or_u64<'de, D>(deserializer: D) -> Result<bool, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum BoolOrU64 {
+        Bool(bool),
+        U64(u64),
+    }
+
+    Ok(match BoolOrU64::deserialize(deserializer)? {
+        BoolOrU64::Bool(v) => v,
+        BoolOrU64::U64(v) => v != 0,
+    })
+}
+
+fn str_or_f64<'de, D>(deserializer: D) -> Result<f64, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum StrOrF64<'a> {
+        Str(&'a str),
+        F64(f64),
+    }
+
+    Ok(match StrOrF64::deserialize(deserializer)? {
+        StrOrF64::Str(v) => v
+            .parse::<f64>()
+            .map_err(|_| serde::de::Error::custom("failed to parse f64 number"))?,
+        StrOrF64::F64(v) => v,
+    })
+}
+
 macro_rules! impl_try_from_str {
     ($type:ty) => {
         impl TryFrom<&str> for $type {
@@ -69,7 +105,7 @@ macro_rules! impl_try_from_str {
 //type ATOMICATTRIBUTE = VariantInt8Int16Int32Int64Uint8Uint16Uint32Uint64Float32Float64StringINT8VECINT16VECINT32VECINT64VECUINT8VECUINT16VECUINT32VECUINT64VECFLOATVECDOUBLEVECSTRINGVEC;
 type ATTRIBUTEMAP = Vec<PairStringATOMICATTRIBUTE>;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct FORMAT {
     pub name: String,
@@ -77,7 +113,7 @@ pub struct FORMAT {
 }
 impl_try_from_str!(FORMAT);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Acceptoffer {
     #[serde(deserialize_with = "str_or_u64")]
@@ -85,7 +121,7 @@ pub struct Acceptoffer {
 }
 impl_try_from_str!(Acceptoffer);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Addcolauth {
     pub collection_name: Name,
@@ -93,7 +129,7 @@ pub struct Addcolauth {
 }
 impl_try_from_str!(Addcolauth);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Addconftoken {
     pub token_contract: Name,
@@ -101,7 +137,7 @@ pub struct Addconftoken {
 }
 impl_try_from_str!(Addconftoken);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Addnotifyacc {
     pub collection_name: Name,
@@ -109,14 +145,14 @@ pub struct Addnotifyacc {
 }
 impl_try_from_str!(Addnotifyacc);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Admincoledit {
     pub collection_format_extension: Vec<FORMAT>,
 }
 impl_try_from_str!(Admincoledit);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Announcedepo {
     pub owner: Name,
@@ -124,7 +160,7 @@ pub struct Announcedepo {
 }
 impl_try_from_str!(Announcedepo);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct AssetsS {
     #[serde(deserialize_with = "str_or_u64")]
@@ -139,7 +175,7 @@ pub struct AssetsS {
 }
 impl_try_from_str!(AssetsS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Backasset {
     pub payer: Name,
@@ -150,7 +186,7 @@ pub struct Backasset {
 }
 impl_try_from_str!(Backasset);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct BalancesS {
     pub owner: Name,
@@ -158,7 +194,7 @@ pub struct BalancesS {
 }
 impl_try_from_str!(BalancesS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Burnasset {
     pub asset_owner: Name,
@@ -167,7 +203,7 @@ pub struct Burnasset {
 }
 impl_try_from_str!(Burnasset);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Canceloffer {
     #[serde(deserialize_with = "str_or_u64")]
@@ -175,20 +211,22 @@ pub struct Canceloffer {
 }
 impl_try_from_str!(Canceloffer);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct CollectionsS {
     pub collection_name: Name,
     pub author: Name,
+    #[serde(deserialize_with = "bool_or_u64")]
     pub allow_notify: Bool,
     pub authorized_accounts: Vec<Name>,
     pub notify_accounts: Vec<Name>,
+    #[serde(deserialize_with = "str_or_f64")]
     pub market_fee: Float64,
     pub serialized_data: Vec<Uint8>,
 }
 impl_try_from_str!(CollectionsS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct ConfigS {
     #[serde(deserialize_with = "str_or_u64")]
@@ -201,7 +239,7 @@ pub struct ConfigS {
 }
 impl_try_from_str!(ConfigS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Createcol {
     pub author: Name,
@@ -214,7 +252,7 @@ pub struct Createcol {
 }
 impl_try_from_str!(Createcol);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Createoffer {
     pub sender: Name,
@@ -225,7 +263,7 @@ pub struct Createoffer {
 }
 impl_try_from_str!(Createoffer);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Createschema {
     pub authorized_creator: Name,
@@ -235,7 +273,7 @@ pub struct Createschema {
 }
 impl_try_from_str!(Createschema);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Createtempl {
     pub authorized_creator: Name,
@@ -248,7 +286,7 @@ pub struct Createtempl {
 }
 impl_try_from_str!(Createtempl);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Declineoffer {
     #[serde(deserialize_with = "str_or_u64")]
@@ -256,7 +294,7 @@ pub struct Declineoffer {
 }
 impl_try_from_str!(Declineoffer);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct ExtendedSymbol {
     pub sym: Symbol,
@@ -264,7 +302,7 @@ pub struct ExtendedSymbol {
 }
 impl_try_from_str!(ExtendedSymbol);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Extendschema {
     pub authorized_editor: Name,
@@ -274,21 +312,21 @@ pub struct Extendschema {
 }
 impl_try_from_str!(Extendschema);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Forbidnotify {
     pub collection_name: Name,
 }
 impl_try_from_str!(Forbidnotify);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Hydraload {
     pub payload: Vec<HydraloadPayload>,
 }
 impl_try_from_str!(Hydraload);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct HydraloadPayload {
     pub table_name: Name,
@@ -297,13 +335,13 @@ pub struct HydraloadPayload {
 }
 impl_try_from_str!(HydraloadPayload);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Init {
 }
 impl_try_from_str!(Init);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Locktemplate {
     pub authorized_editor: Name,
@@ -312,7 +350,7 @@ pub struct Locktemplate {
 }
 impl_try_from_str!(Locktemplate);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Logbackasset {
     pub asset_owner: Name,
@@ -322,7 +360,7 @@ pub struct Logbackasset {
 }
 impl_try_from_str!(Logbackasset);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Logburnasset {
     pub asset_owner: Name,
@@ -338,7 +376,7 @@ pub struct Logburnasset {
 }
 impl_try_from_str!(Logburnasset);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Logmint {
     #[serde(deserialize_with = "str_or_u64")]
@@ -355,7 +393,7 @@ pub struct Logmint {
 }
 impl_try_from_str!(Logmint);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Lognewoffer {
     #[serde(deserialize_with = "str_or_u64")]
@@ -368,7 +406,7 @@ pub struct Lognewoffer {
 }
 impl_try_from_str!(Lognewoffer);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Lognewtempl {
     pub template_id: Int32,
@@ -382,7 +420,7 @@ pub struct Lognewtempl {
 }
 impl_try_from_str!(Lognewtempl);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Logsetdata {
     pub asset_owner: Name,
@@ -393,7 +431,7 @@ pub struct Logsetdata {
 }
 impl_try_from_str!(Logsetdata);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Logtransfer {
     pub collection_name: Name,
@@ -404,7 +442,7 @@ pub struct Logtransfer {
 }
 impl_try_from_str!(Logtransfer);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Mintasset {
     pub authorized_minter: Name,
@@ -418,7 +456,7 @@ pub struct Mintasset {
 }
 impl_try_from_str!(Mintasset);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct OffersS {
     #[serde(deserialize_with = "str_or_u64")]
@@ -432,7 +470,7 @@ pub struct OffersS {
 }
 impl_try_from_str!(OffersS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct PairStringATOMICATTRIBUTE {
     pub key: String,
@@ -440,7 +478,7 @@ pub struct PairStringATOMICATTRIBUTE {
 }
 impl_try_from_str!(PairStringATOMICATTRIBUTE);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Payofferram {
     pub payer: Name,
@@ -449,7 +487,7 @@ pub struct Payofferram {
 }
 impl_try_from_str!(Payofferram);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Remcolauth {
     pub collection_name: Name,
@@ -457,7 +495,7 @@ pub struct Remcolauth {
 }
 impl_try_from_str!(Remcolauth);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Remnotifyacc {
     pub collection_name: Name,
@@ -465,7 +503,7 @@ pub struct Remnotifyacc {
 }
 impl_try_from_str!(Remnotifyacc);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct SchemasS {
     pub schema_name: Name,
@@ -473,7 +511,7 @@ pub struct SchemasS {
 }
 impl_try_from_str!(SchemasS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Setassetdata {
     pub authorized_editor: Name,
@@ -484,7 +522,7 @@ pub struct Setassetdata {
 }
 impl_try_from_str!(Setassetdata);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Setcoldata {
     pub collection_name: Name,
@@ -492,7 +530,7 @@ pub struct Setcoldata {
 }
 impl_try_from_str!(Setcoldata);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Setmarketfee {
     pub collection_name: Name,
@@ -500,14 +538,14 @@ pub struct Setmarketfee {
 }
 impl_try_from_str!(Setmarketfee);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Setversion {
     pub new_version: String,
 }
 impl_try_from_str!(Setversion);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct TemplatesS {
     pub template_id: Int32,
@@ -520,7 +558,7 @@ pub struct TemplatesS {
 }
 impl_try_from_str!(TemplatesS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct TokenconfigsS {
     pub standard: Name,
@@ -528,7 +566,7 @@ pub struct TokenconfigsS {
 }
 impl_try_from_str!(TokenconfigsS);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Transfer {
     pub from: Name,
@@ -538,7 +576,7 @@ pub struct Transfer {
 }
 impl_try_from_str!(Transfer);
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Withdraw {
     pub owner: Name,

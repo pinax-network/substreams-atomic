@@ -1,4 +1,5 @@
 use substreams::errors::Error;
+use substreams::log;
 use substreams_antelope::Block;
 
 use crate::abi;
@@ -97,7 +98,7 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
                 3 => "Remove",
                 _ => "Error",
             };
-            
+
             items.push(Collection {
                 // trace information
                 trx_id: trx.id.clone(),
@@ -108,7 +109,6 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
 
                 // payload
                 //collection_name: new_name.expect("REASON").to_string(),
-                
             });
         }
     }
