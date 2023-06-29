@@ -51,6 +51,7 @@ message Collection {
   string trx_id = 1;
   uint32 action_index = 2;
 
+  // database operation
   string action = 3;
 
   // data payload
@@ -60,8 +61,29 @@ message Collection {
   repeated string authorized_accounts = 7;
   repeated string notify_accounts = 8;
   double market_fee = 9;
-  repeated uint32 serialized_data = 10;
+  //repeated uint32 serialized_data = 10;
 
   // extra
   //repeated string authorized_accounts_delta = 11;
+}
+
+message Templates {
+  repeated Template items = 1;
+}
+
+message Template {
+  // trace information
+  string trx_id = 1;
+  uint32 action_index = 2;
+
+  // databas operation
+  string action = 3;
+
+  // data payload
+  int32 template_id = 4;
+  string schema_name = 5;
+  bool transferable =6;
+  bool burnable = 7;
+  uint32 max_supply = 8;
+  uint32 issued_supply =9;
 }

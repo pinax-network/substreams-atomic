@@ -35,3 +35,10 @@ modules:
       - source: sf.antelope.type.v1.Block
     output:
       type: proto:antelope.atomicassets.v1.Collections
+
+  - name: map_templates
+    kind: map
+    inputs:
+      - source: sf.antelope.type.v1.Block
+    output:
+      type: proto:antelope.atomicassets.v1.Templates

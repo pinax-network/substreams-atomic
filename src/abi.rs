@@ -550,7 +550,9 @@ impl_try_from_str!(Setversion);
 pub struct TemplatesS {
     pub template_id: Int32,
     pub schema_name: Name,
+    #[serde(deserialize_with = "bool_or_u64")]
     pub transferable: Bool,
+    #[serde(deserialize_with = "bool_or_u64")]
     pub burnable: Bool,
     pub max_supply: Uint32,
     pub issued_supply: Uint32,

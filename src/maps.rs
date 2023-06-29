@@ -160,7 +160,7 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
                 authorized_accounts: authorized_accounts,
                 notify_accounts: notify_accounts,
                 market_fee: market_fee,
-                serialized_data: Vec::<u32>::from(serialized_data),
+                //serialized_data: Vec::<u32>::from(serialized_data),
 
                 //extra
                 //authorized_accounts_delta: authorized_accounts_delta,
@@ -168,4 +168,50 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
         }
     }
     Ok(Collections { items })
+}
+
+#[substreams::handlers::map]
+fn map_templates(block: Block) -> Result<Templates, Error> {
+    let mut items = vec![];
+
+    for trx in block.all_transaction_traces() {
+        for db_op in &trx.db_ops {
+            if db_op.table_name != "templates" { continue; }
+            let contract = db_op.scope.clone();
+
+            let new_data = match abi::TemplatesS::try_from(db_op.new_data_json.as_str()){
+                Ok(data) => data,
+                Err(error) => panic!("new data not decoded: {}", error),
+            };
+            //let old_data = abi::TemplatesS::try_from(db_op.old_data_json.as_str()).ok();
+            //let new_data = abi::TemplatesS::try_from(db_op.new_data_json.as_str()).ok();
+            //if old_data.is_none() && new_data.is_none() { continue; } // no data
+            
+            let action = match db_op.operation{
+                0 => "Unknown",
+                1 => "Insert",
+                2 => "Update",
+                3 => "Remove",
+                _ => "Error",
+            };
+
+            items.push(Template {
+                // trace information
+                trx_id: trx.id.clone(),
+                action_index: db_op.action_index,
+
+                // db operation 
+                action: action.to_string(),
+
+                // data payload
+                template_id: new_data.template_id.clone(),
+                schema_name: new_data.schema_name.clone(),
+                transferable: new_data.transferable.clone(),
+                burnable: new_data.burnable.clone(),
+                max_supply: new_data.max_supply.clone(),
+                issued_supply: new_data.issued_supply.clone(),
+            });
+        }
+    }
+    Ok(Templates { items })
 }

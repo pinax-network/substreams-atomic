@@ -34,3 +34,7 @@ block 316857083 contains insert, createcol action, transaction c77036efe5d133fc7
 .PHONY: collection
 collection: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_collections -s 313817420  -t +1
+
+.PHONY: template
+template: build
+	substreams run -e $(ENDPOINT) substreams.yaml map_templates -s 317648437  -t +1
