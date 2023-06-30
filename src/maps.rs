@@ -78,66 +78,20 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
         for db_op in &trx.db_ops {
             if db_op.table_name != "collections" { continue; }
 
-            let old_data = abi::CollectionsS::try_from(db_op.old_data_json.as_str()).ok();
-            let new_data = abi::CollectionsS::try_from(db_op.new_data_json.as_str()).ok();
-            if old_data.is_none() && new_data.is_none() { continue; } // no data
-            
-            let action = match db_op.operation{
+            let new_data = match abi::CollectionsS::try_from(db_op.new_data_json.as_str()){
+                Ok(data) => data,
+                Err(error) => {
+                    substreams::log::debug!("new data not decoded: {}", error);
+                    continue;
+                }
+            };
+
+            let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
                 2 => "Update",
                 3 => "Remove",
                 _ => "Error",
-            };
-
-            let collection_name = match &new_data {
-                Some(data) => data.collection_name.clone(),
-                None => "No new data".to_string(),
-            };
-
-            let author = match &new_data {
-                Some(data) => data.author.clone(),
-                None => "No new data".to_string(),
-            };
-
-            let allow_notify = match &new_data {
-                Some(data) => data.allow_notify.clone(),
-                None => false,
-            };
-
-            let old_authorized_accounts = match &old_data {
-                Some(data) => Some(Vec::<String>::from(data.authorized_accounts.clone())),
-                None => None,
-            };
-
-            let new_authorized_accounts = match &new_data {
-                Some(data) => Some(Vec::<String>::from(data.authorized_accounts.clone())),
-                None => None,
-            };
-
-            let authorized_accounts = match new_authorized_accounts.is_some() {
-                true => new_authorized_accounts.unwrap(),
-                false => [].to_vec(),
-            };
-
-            //let authorized_accounts_delta = match old_authorized_accounts.is_some() {
-            //    true => authorized_accounts - old_authorized_accounts.unwrap(),
-            //    false => authorized_accounts, 
-            //};
-
-            let notify_accounts = match &new_data {
-                Some(data) => data.notify_accounts.clone(),
-                None => [].to_vec(),
-            };
-
-            let market_fee = match &new_data {
-                Some(data) => data.market_fee.clone(),
-                None => 0.0,
-            };
-
-            let serialized_data = match &new_data {
-                Some(data) => data.serialized_data.clone(),
-                None => [].to_vec(),
             };
 
             items.push(Collection {
@@ -146,19 +100,18 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
                 action_index: db_op.action_index,
 
                 // db operation 
-                action: action.to_string(),
+                db_operation: db_operation.to_string(),
 
                 // payload
-                collection_name: collection_name,
-                author: author,
-                allow_notify: allow_notify,
-                authorized_accounts: authorized_accounts,
-                notify_accounts: notify_accounts,
-                market_fee: market_fee,
-                //serialized_data: Vec::<u32>::from(serialized_data),
+                collection_name: new_data.collection_name.clone(),
+                author: new_data.author.clone(),
+                allow_notify: new_data.allow_notify.clone(),
+                authorized_accounts: new_data.authorized_accounts.clone(),
+                notify_accounts: new_data.notify_accounts.clone(),
+                market_fee: new_data.market_fee.clone(),
 
-                //extra
-                //authorized_accounts_delta: authorized_accounts_delta,
+                // Takes too much screen space when printed so commented for now
+                //serialized_data: Vec::<u32>::from(new_data.serialized_data),
             });
         }
     }
@@ -175,13 +128,13 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
 
             let new_data = match abi::TemplatesS::try_from(db_op.new_data_json.as_str()){
                 Ok(data) => data,
-                Err(error) => panic!("new data not decoded: {}", error),
+                Err(error) => {
+                    substreams::log::debug!("new data not decoded: {}", error);
+                    continue;
+                }
             };
-            //let old_data = abi::TemplatesS::try_from(db_op.old_data_json.as_str()).ok();
-            //let new_data = abi::TemplatesS::try_from(db_op.new_data_json.as_str()).ok();
-            //if old_data.is_none() && new_data.is_none() { continue; } // no data
-            
-            let action = match db_op.operation{
+
+            let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
                 2 => "Update",
@@ -195,7 +148,7 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
                 action_index: db_op.action_index,
 
                 // db operation 
-                action: action.to_string(),
+                db_operation: db_operation.to_string(),
 
                 // data payload
                 template_id: new_data.template_id.clone(),
@@ -220,19 +173,20 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
 
             let new_data = match abi::SchemasS::try_from(db_op.new_data_json.as_str()){
                 Ok(data) => data,
-                Err(error) => panic!("new data not decoded: {}", error),
+                Err(error) => {
+                    substreams::log::debug!("new data not decoded: {}", error);
+                    continue;
+                }
             };
-            //let old_data = abi::TemplatesS::try_from(db_op.old_data_json.as_str()).ok();
-            //let new_data = abi::TemplatesS::try_from(db_op.new_data_json.as_str()).ok();
-            //if old_data.is_none() && new_data.is_none() { continue; } // no data
-            
-            let action = match db_op.operation{
+
+            let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
                 2 => "Update",
                 3 => "Remove",
                 _ => "Error",
             };
+
             let mut format = vec![];
             for f in &new_data.format {
                 format.push(Format {
@@ -240,13 +194,14 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
                     dtype: f.r#type.clone(),
                 });
             }
+
             items.push(Schema {
                 // trace information
                 trx_id: trx.id.clone(),
                 action_index: db_op.action_index,
 
                 // db operation 
-                action: action.to_string(),
+                db_operation: db_operation.to_string(),
 
                 // data payload
                 schema_name: new_data.schema_name.clone(),

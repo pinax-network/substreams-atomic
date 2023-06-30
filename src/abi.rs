@@ -16,7 +16,7 @@ type Uint16 = u16;
 type Uint32 = u32;
 type Uint64 = u64;
 type Float32 = String;
-type Float64 = f64;
+type Float64 = f64; //String;
 
 fn str_or_i64<'de, D>(deserializer: D) -> Result<i64, D::Error>
 where
@@ -584,7 +584,7 @@ impl_try_from_str!(Setversion);
 pub struct TemplatesS {
     pub template_id: Int32,
     pub schema_name: Name,
-    #[serde(deserialize_with = "bool_or_u64")]
+    //#[serde(deserialize_with = "bool_or_u64")]
     pub transferable: Bool,
     #[serde(deserialize_with = "bool_or_u64")]
     pub burnable: Bool,
