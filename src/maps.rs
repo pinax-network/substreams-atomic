@@ -17,16 +17,12 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
             if action_trace.name != "logtransfer" { continue; }
             match abi::Logtransfer::try_from(action_trace.json_data.as_str()) {
                 Ok(data) => {
-                    let converted_asset_ids: Vec<u64> = data.asset_ids
-                        .iter()
-                        .map(|s| s.parse::<u64>().unwrap())
-                        .collect();
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
                         collection_name: data.collection_name,
                         from: data.from,
                         to: data.to,
-                        asset_ids: converted_asset_ids,
+                        asset_ids: data.asset_ids,
                         //memo: data.memo,
                     });
                 }

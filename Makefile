@@ -42,3 +42,8 @@ template: build
 .PHONY: schema
 schema: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_schemas -s 317377836  -t +1
+
+
+.PHONY: transfers
+transfers: build
+	substreams run -e $(ENDPOINT) substreams.yaml map_transfers -s 317830278  -t +1
