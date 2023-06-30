@@ -31,19 +31,22 @@ schema_events: build
 # Here are some several blocks containing an event on collections table \
 block 313817420 contains update, addcolauth action, transaction 69012608211c5aa0bb6798efd7bec5c2d69072aa2cdbefb42c993a8f5ebf5614 \
 block 316857083 contains insert, createcol action, transaction c77036efe5d133fc78dae8829ab59413761ac055eacf478e2241e0265fa5f73f
-.PHONY: collection
+.PHONY: collections
 collection: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_collections -s 313817420  -t +1
 
-.PHONY: template
+.PHONY: templates
 template: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_templates -s 317648437  -t +1
 
-.PHONY: schema
+.PHONY: schemas
 schema: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_schemas -s 317377836  -t +1
-
 
 .PHONY: transfers
 transfers: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_transfers -s 317830278  -t +1
+
+.PHONY: assets
+assets: build
+	substreams run -e $(ENDPOINT) substreams.yaml map_assets -s 317928585  -t +1

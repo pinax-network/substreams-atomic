@@ -249,7 +249,7 @@ pub struct CollectionsS {
     pub notify_accounts: Vec<Name>,
     #[serde(deserialize_with = "str_or_f64")]
     pub market_fee: Float64,
-    pub serialized_data: Vec<Uint32>, //Vec<Uint8>,
+    pub serialized_data: Vec<Uint8>,
 }
 impl_try_from_str!(CollectionsS);
 

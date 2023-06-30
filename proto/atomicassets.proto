@@ -100,3 +100,26 @@ message Template {
   uint32 max_supply = 8;
   uint32 issued_supply =9;
 }
+
+message Assets {
+  repeated Asset items = 1;
+}
+
+message Asset {
+  // trace information
+  string trx_id = 1;
+  uint32 action_index = 2;
+
+  // databas operation
+  string db_operation = 3;
+
+  // data payload
+  uint64 asset_id = 4;
+  string collection_name = 5;
+  string schema_name = 6;
+  int32 template_id = 7;
+  string ram_payer = 8;
+  //repeated string backed_tokens = 9;
+  //repeated int32 immutable_serialized_data = 10;
+  //repeated int32 mutable_serialized_data = 11;
+}

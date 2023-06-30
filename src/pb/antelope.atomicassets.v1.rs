@@ -142,4 +142,36 @@ pub struct Template {
     #[prost(uint32, tag="9")]
     pub issued_supply: u32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Assets {
+    #[prost(message, repeated, tag="1")]
+    pub items: ::prost::alloc::vec::Vec<Asset>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Asset {
+    /// trace information
+    #[prost(string, tag="1")]
+    pub trx_id: ::prost::alloc::string::String,
+    #[prost(uint32, tag="2")]
+    pub action_index: u32,
+    /// databas operation
+    #[prost(string, tag="3")]
+    pub db_operation: ::prost::alloc::string::String,
+    /// data payload
+    #[prost(uint64, tag="4")]
+    pub asset_id: u64,
+    #[prost(string, tag="5")]
+    pub collection_name: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub schema_name: ::prost::alloc::string::String,
+    #[prost(int32, tag="7")]
+    pub template_id: i32,
+    /// repeated string backed_tokens = 9;
+    /// repeated int32 immutable_serialized_data = 10;
+    /// repeated int32 mutable_serialized_data = 11;
+    #[prost(string, tag="8")]
+    pub ram_payer: ::prost::alloc::string::String,
+}
 // @@protoc_insertion_point(module)

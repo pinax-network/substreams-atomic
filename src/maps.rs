@@ -211,3 +211,48 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
     }
     Ok(Schemas { items })
 }
+
+#[substreams::handlers::map]
+fn map_assets(block: Block) -> Result<Assets, Error> {
+    let mut items = vec![];
+
+    for trx in block.all_transaction_traces() {
+        for db_op in &trx.db_ops {
+            if db_op.table_name != "assets" { continue; }
+
+            substreams::log::debug!("data json {}", db_op.new_data_json.as_str());
+            let new_data = match abi::AssetsS::try_from(db_op.new_data_json.as_str()){
+                Ok(data) => data,
+                Err(error) => {
+                    substreams::log::debug!("new data not decoded: {}", error);
+                    continue;
+                }
+            };
+
+            let db_operation = match db_op.operation{
+                0 => "Unknown",
+                1 => "Insert",
+                2 => "Update",
+                3 => "Remove",
+                _ => "Error",
+            };
+
+            items.push(Asset {
+                // trace information
+                trx_id: trx.id.clone(),
+                action_index: db_op.action_index,
+
+                // db operation 
+                db_operation: db_operation.to_string(),
+
+                // data payload
+                asset_id: new_data.asset_id.clone(),
+                collection_name: new_data.collection_name.clone(),
+                schema_name: new_data.schema_name.clone(),
+                template_id: new_data.template_id.clone(),
+                ram_payer: new_data.ram_payer.clone(),
+            });
+        }
+    }
+    Ok(Assets { items })
+}
