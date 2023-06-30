@@ -52,7 +52,7 @@ message Schema {
   uint32 action_index = 2;
 
   // database operation
-  string action = 3;
+  string db_operation = 3;
   // data payload
   string schema_name = 4;
   repeated Format format = 5;
@@ -68,7 +68,7 @@ message Collection {
   uint32 action_index = 2;
 
   // database operation
-  string action = 3;
+  string db_operation = 3;
 
   // data payload
   string collection_name = 4;
@@ -78,9 +78,6 @@ message Collection {
   repeated string notify_accounts = 8;
   double market_fee = 9;
   //repeated uint32 serialized_data = 10;
-
-  // extra
-  //repeated string authorized_accounts_delta = 11;
 }
 
 message Templates {
@@ -93,7 +90,7 @@ message Template {
   uint32 action_index = 2;
 
   // databas operation
-  string action = 3;
+  string db_operation = 3;
 
   // data payload
   int32 template_id = 4;

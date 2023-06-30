@@ -72,7 +72,7 @@ pub struct Schema {
     pub action_index: u32,
     /// database operation
     #[prost(string, tag="3")]
-    pub action: ::prost::alloc::string::String,
+    pub db_operation: ::prost::alloc::string::String,
     /// data payload
     #[prost(string, tag="4")]
     pub schema_name: ::prost::alloc::string::String,
@@ -95,7 +95,7 @@ pub struct Collection {
     pub action_index: u32,
     /// database operation
     #[prost(string, tag="3")]
-    pub action: ::prost::alloc::string::String,
+    pub db_operation: ::prost::alloc::string::String,
     /// data payload
     #[prost(string, tag="4")]
     pub collection_name: ::prost::alloc::string::String,
@@ -127,7 +127,7 @@ pub struct Template {
     pub action_index: u32,
     /// databas operation
     #[prost(string, tag="3")]
-    pub action: ::prost::alloc::string::String,
+    pub db_operation: ::prost::alloc::string::String,
     /// data payload
     #[prost(int32, tag="4")]
     pub template_id: i32,
