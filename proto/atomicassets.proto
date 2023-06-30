@@ -123,3 +123,19 @@ message Asset {
   //repeated int32 immutable_serialized_data = 10;
   //repeated int32 mutable_serialized_data = 11;
 }
+
+message Balances {
+  repeated Balance items =1 ;
+}
+
+message Balance {
+  // trace information
+  string trx_id = 1;
+  uint32 action_index = 2;
+ 
+  // databas operation
+  string db_operation = 3;
+  
+  string owner = 4;
+  repeated string quantities = 5;
+}
