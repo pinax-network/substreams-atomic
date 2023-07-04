@@ -54,3 +54,8 @@ assets: build
 .PHONY: offers
 offers: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_offers -s 318586021  -t +1
+
+# Not used for now \
+.PHONY: collection_events \
+collection_events: build \
+	substreams run -e $(ENDPOINT) substreams.yaml map_collection_events -s 317811050 -t +1

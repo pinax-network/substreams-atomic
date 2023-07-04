@@ -70,3 +70,11 @@ modules:
       - source: sf.antelope.type.v1.Block
     output:
       type: proto:antelope.atomicassets.v1.Offers
+
+# Not used for now
+#  - name: map_collection_events
+#    kind: map
+#    inputs:
+#      - source: sf.antelope.type.v1.Block
+#    output:
+#      type: proto:antelope.atomicassets.v1.CollectionEvents

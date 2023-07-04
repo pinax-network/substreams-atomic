@@ -160,3 +160,23 @@ message Offer {
   string memo = 9;
   string ram_payer = 10;
 }
+
+/* Not used for now
+message CollectionEvents {
+  repeated CollectionEvent items = 1;
+}
+
+message CollectionEvent {
+  // trace information
+  string trx_id = 1;
+
+  // data payload
+  string collection_name = 3;
+  repeated Attribute data = 4;
+}
+
+message Attribute {
+  string key = 1;
+  string value = 2;
+}
+*/

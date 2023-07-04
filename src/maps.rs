@@ -343,3 +343,40 @@ fn map_offers(block: Block) -> Result<Offers, Error> {
     }
     Ok(Offers { items })
 }
+
+/* Not used for now
+#[substreams::handlers::map]
+fn map_collection_events(block: Block) -> Result<CollectionEvents, Error> {
+    let mut response = vec![];
+
+    for trx in block.all_transaction_traces() {
+        // action traces
+        for trace in &trx.action_traces {
+            let action_trace = trace.action.as_ref().unwrap();
+            if action_trace.account != trace.receiver {continue}
+            if action_trace.name != "setcoldata" { continue; }
+            match abi::Setcoldata::try_from(action_trace.json_data.as_str()) {
+                Ok(data) => {
+                    let mut attributes = vec![];
+                    for a in &data.data {
+                        attributes.push(Attribute {
+                            key: a.key,
+                            value: a.value.to_string(),
+                        });
+                    }
+                    response.push(CollectionEvent {
+                        // trace information
+                        trx_id: trx.id.clone(),
+
+                        // payload
+                        collection_name: data.collection_name,
+                        data: attributes,
+                    });
+                }
+                Err(_) => panic!("Failed to decode atomicassets::setcoldata"),//{continue} 
+           }
+        }
+    }
+    Ok(CollectionEvents { items: response })
+}
+*/
