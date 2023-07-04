@@ -56,3 +56,10 @@ modules:
       - source: sf.antelope.type.v1.Block
     output:
       type: proto:antelope.atomicassets.v1.Assets
+
+  - name: map_balances
+    kind: map
+    inputs:
+      - source: sf.antelope.type.v1.Block
+    output:
+      type: proto:antelope.atomicassets.v1.Balances
