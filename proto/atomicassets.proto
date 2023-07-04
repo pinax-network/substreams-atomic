@@ -139,3 +139,24 @@ message Balance {
   string owner = 4;
   repeated string quantities = 5;
 }
+
+message Offers {
+  repeated Offer items = 1;
+}
+
+message Offer {
+  // trace information
+  string trx_id = 1;
+  uint32 action_index = 2;
+ 
+  // databas operation
+  string db_operation = 3;
+  
+  uint64 offer_id = 4;
+  string offer_sender = 5;
+  string offer_recipient = 6;
+  repeated uint64 sender_asset_ids = 7;
+  repeated uint64 recipient_asset_ids = 8;
+  string memo = 9;
+  string ram_payer = 10;
+}

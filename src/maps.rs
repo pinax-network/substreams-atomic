@@ -297,3 +297,49 @@ fn map_balances(block: Block) -> Result<Balances, Error> {
     }
     Ok(Balances { items })
 }
+
+#[substreams::handlers::map]
+fn map_offers(block: Block) -> Result<Offers, Error> {
+    let mut items = vec![];
+
+    for trx in block.all_transaction_traces() {
+        for db_op in &trx.db_ops {
+            if db_op.table_name != "offers" { continue; }
+
+            let new_data = match abi::OffersS::try_from(db_op.new_data_json.as_str()){
+                Ok(data) => data,
+                Err(error) => {
+                    substreams::log::debug!("new data not decoded: {}", error);
+                    continue;
+                }
+            };
+
+            let db_operation = match db_op.operation{
+                0 => "Unknown",
+                1 => "Insert",
+                2 => "Update",
+                3 => "Remove",
+                _ => "Error",
+            };
+
+            items.push(Offer {
+                // trace information
+                trx_id: trx.id.clone(),
+                action_index: db_op.action_index,
+
+                // db operation 
+                db_operation: db_operation.to_string(),
+
+                // data payload
+                offer_id: new_data.offer_id.clone(),
+                offer_sender: new_data.sender.clone(),
+                offer_recipient: new_data.recipient.clone(),
+                sender_asset_ids: new_data.sender_asset_ids.clone(),
+                recipient_asset_ids: new_data.recipient_asset_ids.clone(),
+                memo: new_data.memo.clone(),
+                ram_payer: new_data.ram_payer.clone(),
+            });
+        }
+    }
+    Ok(Offers { items })
+}

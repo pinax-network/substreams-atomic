@@ -174,4 +174,58 @@ pub struct Asset {
     #[prost(string, tag="8")]
     pub ram_payer: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Balances {
+    #[prost(message, repeated, tag="1")]
+    pub items: ::prost::alloc::vec::Vec<Balance>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Balance {
+    /// trace information
+    #[prost(string, tag="1")]
+    pub trx_id: ::prost::alloc::string::String,
+    #[prost(uint32, tag="2")]
+    pub action_index: u32,
+    /// databas operation
+    #[prost(string, tag="3")]
+    pub db_operation: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub owner: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag="5")]
+    pub quantities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Offers {
+    #[prost(message, repeated, tag="1")]
+    pub items: ::prost::alloc::vec::Vec<Offer>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Offer {
+    /// trace information
+    #[prost(string, tag="1")]
+    pub trx_id: ::prost::alloc::string::String,
+    #[prost(uint32, tag="2")]
+    pub action_index: u32,
+    /// databas operation
+    #[prost(string, tag="3")]
+    pub db_operation: ::prost::alloc::string::String,
+    #[prost(uint64, tag="4")]
+    pub offer_id: u64,
+    #[prost(string, tag="5")]
+    pub offer_sender: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub offer_recipient: ::prost::alloc::string::String,
+    #[prost(uint64, repeated, tag="7")]
+    pub sender_asset_ids: ::prost::alloc::vec::Vec<u64>,
+    #[prost(uint64, repeated, tag="8")]
+    pub recipient_asset_ids: ::prost::alloc::vec::Vec<u64>,
+    #[prost(string, tag="9")]
+    pub memo: ::prost::alloc::string::String,
+    #[prost(string, tag="10")]
+    pub ram_payer: ::prost::alloc::string::String,
+}
 // @@protoc_insertion_point(module)

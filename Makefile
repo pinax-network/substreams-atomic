@@ -50,3 +50,7 @@ transfers: build
 .PHONY: assets
 assets: build
 	substreams run -e $(ENDPOINT) substreams.yaml map_assets -s 317928585  -t +1
+
+.PHONY: offers
+offers: build
+	substreams run -e $(ENDPOINT) substreams.yaml map_offers -s 318586021  -t +1
