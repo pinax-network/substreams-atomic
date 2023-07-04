@@ -110,8 +110,9 @@ message Asset {
   string trx_id = 1;
   uint32 action_index = 2;
 
-  // databas operation
+  // database operation
   string db_operation = 3;
+  string scope = 12;
 
   // data payload
   uint64 asset_id = 4;

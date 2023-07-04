@@ -156,9 +156,11 @@ pub struct Asset {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(uint32, tag="2")]
     pub action_index: u32,
-    /// databas operation
+    /// database operation
     #[prost(string, tag="3")]
     pub db_operation: ::prost::alloc::string::String,
+    #[prost(string, tag="12")]
+    pub scope: ::prost::alloc::string::String,
     /// data payload
     #[prost(uint64, tag="4")]
     pub asset_id: u64,

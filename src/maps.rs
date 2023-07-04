@@ -78,21 +78,33 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
         for db_op in &trx.db_ops {
             if db_op.table_name != "collections" { continue; }
 
-            let new_data = match abi::CollectionsS::try_from(db_op.new_data_json.as_str()){
-                Ok(data) => data,
-                Err(error) => {
-                    substreams::log::debug!("new data not decoded: {}", error);
-                    continue;
-                }
-            };
-
-            let db_operation = match db_op.operation{
+            let db_operation = match db_op.operation {
                 0 => "Unknown",
                 1 => "Insert",
                 2 => "Update",
                 3 => "Remove",
                 _ => "Error",
             };
+
+            let data;
+            if db_operation == "Remove" {
+                data = match abi::CollectionsS::try_from(db_op.old_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("old data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+            else {
+                data = match abi::CollectionsS::try_from(db_op.new_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("new data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
 
             items.push(Collection {
                 // trace information
@@ -103,15 +115,15 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
                 db_operation: db_operation.to_string(),
 
                 // payload
-                collection_name: new_data.collection_name.clone(),
-                author: new_data.author.clone(),
-                allow_notify: new_data.allow_notify.clone(),
-                authorized_accounts: new_data.authorized_accounts.clone(),
-                notify_accounts: new_data.notify_accounts.clone(),
-                market_fee: new_data.market_fee.clone(),
+                collection_name: data.collection_name.clone(),
+                author: data.author.clone(),
+                allow_notify: data.allow_notify.clone(),
+                authorized_accounts: data.authorized_accounts.clone(),
+                notify_accounts: data.notify_accounts.clone(),
+                market_fee: data.market_fee.clone(),
 
                 // Takes too much screen space when printed so commented for now
-                //serialized_data: Vec::<u32>::from(new_data.serialized_data),
+                //serialized_data: Vec::<u32>::from(data.serialized_data),
             });
         }
     }
@@ -126,14 +138,7 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
         for db_op in &trx.db_ops {
             if db_op.table_name != "templates" { continue; }
 
-            let new_data = match abi::TemplatesS::try_from(db_op.new_data_json.as_str()){
-                Ok(data) => data,
-                Err(error) => {
-                    substreams::log::debug!("new data not decoded: {}", error);
-                    continue;
-                }
-            };
-
+            
             let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
@@ -141,6 +146,26 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
                 3 => "Remove",
                 _ => "Error",
             };
+
+            let data;
+            if db_operation == "Remove" {
+                data = match abi::TemplatesS::try_from(db_op.old_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("old data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+            else {
+                data = match abi::TemplatesS::try_from(db_op.new_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("new data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
 
             items.push(Template {
                 // trace information
@@ -151,12 +176,12 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
                 db_operation: db_operation.to_string(),
 
                 // data payload
-                template_id: new_data.template_id.clone(),
-                schema_name: new_data.schema_name.clone(),
-                transferable: new_data.transferable.clone(),
-                burnable: new_data.burnable.clone(),
-                max_supply: new_data.max_supply.clone(),
-                issued_supply: new_data.issued_supply.clone(),
+                template_id: data.template_id.clone(),
+                schema_name: data.schema_name.clone(),
+                transferable: data.transferable.clone(),
+                burnable: data.burnable.clone(),
+                max_supply: data.max_supply.clone(),
+                issued_supply: data.issued_supply.clone(),
             });
         }
     }
@@ -171,14 +196,6 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
         for db_op in &trx.db_ops {
             if db_op.table_name != "schemas" { continue; }
 
-            let new_data = match abi::SchemasS::try_from(db_op.new_data_json.as_str()){
-                Ok(data) => data,
-                Err(error) => {
-                    substreams::log::debug!("new data not decoded: {}", error);
-                    continue;
-                }
-            };
-
             let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
@@ -187,8 +204,28 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
                 _ => "Error",
             };
 
+            let data;
+            if db_operation == "Remove" {
+                data = match abi::SchemasS::try_from(db_op.old_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("old data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+            else {
+                data = match abi::SchemasS::try_from(db_op.new_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("new data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+
             let mut format = vec![];
-            for f in &new_data.format {
+            for f in &data.format {
                 format.push(Format {
                     name: f.name.clone(),
                     dtype: f.r#type.clone(),
@@ -204,7 +241,7 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
                 db_operation: db_operation.to_string(),
 
                 // data payload
-                schema_name: new_data.schema_name.clone(),
+                schema_name: data.schema_name.clone(),
                 format: format,
             });
         }
@@ -220,14 +257,6 @@ fn map_assets(block: Block) -> Result<Assets, Error> {
         for db_op in &trx.db_ops {
             if db_op.table_name != "assets" { continue; }
 
-            let new_data = match abi::AssetsS::try_from(db_op.new_data_json.as_str()){
-                Ok(data) => data,
-                Err(error) => {
-                    substreams::log::debug!("new data not decoded: {}", error);
-                    continue;
-                }
-            };
-
             let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
@@ -236,6 +265,26 @@ fn map_assets(block: Block) -> Result<Assets, Error> {
                 _ => "Error",
             };
 
+            let data;
+            if db_operation == "Remove" {
+                data = match abi::AssetsS::try_from(db_op.old_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("old data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+            else {
+                data = match abi::AssetsS::try_from(db_op.new_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("new data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+
             items.push(Asset {
                 // trace information
                 trx_id: trx.id.clone(),
@@ -243,13 +292,14 @@ fn map_assets(block: Block) -> Result<Assets, Error> {
 
                 // db operation 
                 db_operation: db_operation.to_string(),
+                scope: db_op.scope.clone(),
 
                 // data payload
-                asset_id: new_data.asset_id.clone(),
-                collection_name: new_data.collection_name.clone(),
-                schema_name: new_data.schema_name.clone(),
-                template_id: new_data.template_id.clone(),
-                ram_payer: new_data.ram_payer.clone(),
+                asset_id: data.asset_id.clone(),
+                collection_name: data.collection_name.clone(),
+                schema_name: data.schema_name.clone(),
+                template_id: data.template_id.clone(),
+                ram_payer: data.ram_payer.clone(),
             });
         }
     }
@@ -265,14 +315,6 @@ fn map_balances(block: Block) -> Result<Balances, Error> {
         for db_op in &trx.db_ops {
             if db_op.table_name != "balances" { continue; }
 
-            let new_data = match abi::BalancesS::try_from(db_op.new_data_json.as_str()){
-                Ok(data) => data,
-                Err(error) => {
-                    substreams::log::debug!("new data not decoded: {}", error);
-                    continue;
-                }
-            };
-
             let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
@@ -281,6 +323,26 @@ fn map_balances(block: Block) -> Result<Balances, Error> {
                 _ => "Error",
             };
 
+            let data;
+            if db_operation == "Remove" {
+                data = match abi::BalancesS::try_from(db_op.old_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("old data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+            else {
+                data = match abi::BalancesS::try_from(db_op.new_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("new data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+            
             items.push(Balance {
                 // trace information
                 trx_id: trx.id.clone(),
@@ -290,8 +352,8 @@ fn map_balances(block: Block) -> Result<Balances, Error> {
                 db_operation: db_operation.to_string(),
 
                 // data payload
-                owner: new_data.owner.clone(),
-                quantities: new_data.quantities.clone(),
+                owner: data.owner.clone(),
+                quantities: data.quantities.clone(),
             });
         }
     }
@@ -306,14 +368,7 @@ fn map_offers(block: Block) -> Result<Offers, Error> {
         for db_op in &trx.db_ops {
             if db_op.table_name != "offers" { continue; }
 
-            let new_data = match abi::OffersS::try_from(db_op.new_data_json.as_str()){
-                Ok(data) => data,
-                Err(error) => {
-                    substreams::log::debug!("new data not decoded: {}", error);
-                    continue;
-                }
-            };
-
+            
             let db_operation = match db_op.operation{
                 0 => "Unknown",
                 1 => "Insert",
@@ -321,6 +376,26 @@ fn map_offers(block: Block) -> Result<Offers, Error> {
                 3 => "Remove",
                 _ => "Error",
             };
+
+            let data;
+            if db_operation == "Remove" {
+                data = match abi::OffersS::try_from(db_op.old_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("old data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
+            else {
+                data = match abi::OffersS::try_from(db_op.new_data_json.as_str()){
+                    Ok(data) => data,
+                    Err(error) => {
+                        substreams::log::debug!("new data not decoded: {}", error);
+                        continue;
+                    }
+                };
+            }
 
             items.push(Offer {
                 // trace information
@@ -331,13 +406,13 @@ fn map_offers(block: Block) -> Result<Offers, Error> {
                 db_operation: db_operation.to_string(),
 
                 // data payload
-                offer_id: new_data.offer_id.clone(),
-                offer_sender: new_data.sender.clone(),
-                offer_recipient: new_data.recipient.clone(),
-                sender_asset_ids: new_data.sender_asset_ids.clone(),
-                recipient_asset_ids: new_data.recipient_asset_ids.clone(),
-                memo: new_data.memo.clone(),
-                ram_payer: new_data.ram_payer.clone(),
+                offer_id: data.offer_id.clone(),
+                offer_sender: data.sender.clone(),
+                offer_recipient: data.recipient.clone(),
+                sender_asset_ids: data.sender_asset_ids.clone(),
+                recipient_asset_ids: data.recipient_asset_ids.clone(),
+                memo: data.memo.clone(),
+                ram_payer: data.ram_payer.clone(),
             });
         }
     }
