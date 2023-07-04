@@ -18,41 +18,13 @@ type Uint64 = u64;
 type Float32 = String;
 type Float64 = f64; //String;
 
-fn str_or_i64<'de, D>(deserializer: D) -> Result<i64, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    #[derive(Deserialize)]
-    #[serde(untagged)]
-    enum StrOrI64<'a> {
-        Str(&'a str),
-        I64(i64),
-    }
-
-    Ok(match StrOrI64::deserialize(deserializer)? {
-        StrOrI64::Str(v) => v
-            .parse::<i64>()
-            .map_err(|_| serde::de::Error::custom("failed to parse i64 number"))?,
-        StrOrI64::I64(v) => v,
-    })
-}
-
-fn str_or_u64<'de, D>(deserializer: D) -> Result<u64, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    #[derive(Deserialize)]
-    #[serde(untagged)]
-    enum StrOrU64<'a> {
-        Str(&'a str),
-        U64(u64),
-    }
-
-    Ok(match StrOrU64::deserialize(deserializer)? {
-        StrOrU64::Str(v) => v
+fn str_or_u64<'de, D: Deserializer<'de>>(deserializer: D) -> Result<u64, D::Error> {
+    Ok(match Deserialize::deserialize(deserializer)? {
+        Value::String(v) => v
             .parse::<u64>()
             .map_err(|_| serde::de::Error::custom("failed to parse u64 number"))?,
-        StrOrU64::U64(v) => v,
+        Value::Number(v) => v.as_u64().ok_or(serde::de::Error::custom("failed to get u64 number"))?,
+        _ => return Err(serde::de::Error::custom("Invalid u64 number type")),
     })
 }
 
@@ -60,16 +32,10 @@ fn bool_or_u64<'de, D>(deserializer: D) -> Result<bool, D::Error>
 where
     D: Deserializer<'de>,
 {
-    #[derive(Deserialize)]
-    #[serde(untagged)]
-    enum BoolOrU64 {
-        Bool(bool),
-        U64(u64),
-    }
-
-    Ok(match BoolOrU64::deserialize(deserializer)? {
-        BoolOrU64::Bool(v) => v,
-        BoolOrU64::U64(v) => v != 0,
+    Ok(match Deserialize::deserialize(deserializer)? {
+        Value::Bool(v) => v,
+        Value::Number(v) => v.as_u64().ok_or(serde::de::Error::custom("failed to get bool from number"))? != 0,
+        _ => return Err(serde::de::Error::custom("Invalid bool type")),
     })
 }
 
@@ -77,18 +43,10 @@ fn str_or_f64<'de, D>(deserializer: D) -> Result<f64, D::Error>
 where
     D: Deserializer<'de>,
 {
-    #[derive(Deserialize)]
-    #[serde(untagged)]
-    enum StrOrF64<'a> {
-        Str(&'a str),
-        F64(f64),
-    }
-
-    Ok(match StrOrF64::deserialize(deserializer)? {
-        StrOrF64::Str(v) => v
-            .parse::<f64>()
-            .map_err(|_| serde::de::Error::custom("failed to parse f64 number"))?,
-        StrOrF64::F64(v) => v,
+    Ok(match Deserialize::deserialize(deserializer)? {
+        Value::String(v) => v.parse::<f64>().map_err(|_| serde::de::Error::custom("failed to parse f64 number"))?,
+        Value::Number(v) => v.as_f64().ok_or(serde::de::Error::custom("failed to get f64 number"))?,
+        _ => return Err(serde::de::Error::custom("Invalid float type")),
     })
 }
 
@@ -96,26 +54,61 @@ fn vec_str_or_u64<'de, D>(deserializer: D) -> Result<Vec<Uint64>, D::Error>
 where
     D: Deserializer<'de>,
 {
-    let value: Value = Deserialize::deserialize(deserializer)?;
-    match value {
+    match Deserialize::deserialize(deserializer)? {
         Value::Array(values) => {
             values
                 .into_iter()
                 .map(|strnum| match strnum {
-                    Value::String(str) => {
-                        str.parse::<Uint64>()
-                            .map_err(|_| de::Error::custom(format!("Failed to parse strnum: {}", str)))
-                    }
-                    Value::Number(num) => {
-                        num.as_u64()
-                            .ok_or_else(|| de::Error::custom(format!("Failed to convert strnum to u64: {}", num)))
-                    }
+                    Value::String(str) => str.parse::<Uint64>().map_err(|_| de::Error::custom(format!("Failed to parse strnum: {}", str))),
+                    Value::Number(num) => num.as_u64().ok_or(de::Error::custom(format!("Failed to convert strnum to u64: {}", num))),
                     _ => Err(de::Error::custom("Invalid strnum type")),
                 })
                 .collect()
         }
         _ => Err(de::Error::custom("Invalid array")),
     }
+}
+
+fn enum_from_str<'de, D>(deserializer: D) -> Result<ATOMICATTRIBUTE, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    match Deserialize::deserialize(deserializer)? {
+        Value::Array(values) => {
+            match values[0].as_str() {
+                Some("string") => Ok(ATOMICATTRIBUTE::StringVariant(values[1].as_str().unwrap().to_string())),
+                Some("uint8") => Ok(ATOMICATTRIBUTE::Uint8Variant(values[1].as_u64().unwrap() as u8)),
+                Some("uint16") => Ok(ATOMICATTRIBUTE::Uint16Variant(values[1].as_u64().unwrap() as u16)),
+                Some("uint32") => Ok(ATOMICATTRIBUTE::Uint32Variant(values[1].as_u64().unwrap() as u32)),
+                Some("uint64") => Ok(ATOMICATTRIBUTE::Uint64Variant(values[1].as_u64().unwrap())),
+                Some("int8") => Ok(ATOMICATTRIBUTE::Int8Variant(values[1].as_u64().unwrap() as i8)),
+                Some("int16") => Ok(ATOMICATTRIBUTE::Int16Variant(values[1].as_i64().unwrap() as i16)),
+                Some("int32") => Ok(ATOMICATTRIBUTE::Int32Variant(values[1].as_i64().unwrap() as i32)),
+                Some("int64") => Ok(ATOMICATTRIBUTE::Int64Variant(values[1].as_i64().unwrap())),
+                Some("float32") => Ok(ATOMICATTRIBUTE::F32Variant(values[1].as_f64().unwrap() as f32)),
+                Some("float64") => Ok(ATOMICATTRIBUTE::F64Variant(values[1].as_f64().unwrap())),
+                Some(_) => Err(de::Error::custom("Invalid enum type")),
+                None => Err(de::Error::custom("Invalid enum")),
+            }
+        }
+        _ => Err(de::Error::custom("Invalid array")),
+    }
+}
+
+
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub enum ATOMICATTRIBUTE {
+    StringVariant(String),
+    Uint8Variant(u8),
+    Uint16Variant(u16),
+    Uint32Variant(u32),
+    Uint64Variant(u64),
+    Int8Variant(i8),
+    Int16Variant(i16),
+    Int32Variant(i32),
+    Int64Variant(i64),
+    F32Variant(f32),
+    F64Variant(f64),
 }
 
 macro_rules! impl_try_from_str {
@@ -129,7 +122,7 @@ macro_rules! impl_try_from_str {
         }
     };
 }
-//type ATOMICATTRIBUTE = VariantInt8Int16Int32Int64Uint8Uint16Uint32Uint64Float32Float64StringINT8VECINT16VECINT32VECINT64VECUINT8VECUINT16VECUINT32VECUINT64VECFLOATVECDOUBLEVECSTRINGVEC;
+// type ATOMICATTRIBUTE = VariantInt8Int16Int32Int64Uint8Uint16Uint32Uint64Float32Float64StringINT8VECINT16VECINT32VECINT64VECUINT8VECUINT16VECUINT32VECUINT64VECFLOATVECDOUBLEVECSTRINGVEC;
 type ATTRIBUTEMAP = Vec<PairStringATOMICATTRIBUTE>;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
@@ -508,7 +501,8 @@ impl_try_from_str!(OffersS);
 #[serde(deny_unknown_fields)]
 pub struct PairStringATOMICATTRIBUTE {
     pub key: String,
-    //pub value: ATOMICATTRIBUTE,
+    #[serde(deserialize_with = "enum_from_str")]
+    pub value: ATOMICATTRIBUTE,
 }
 impl_try_from_str!(PairStringATOMICATTRIBUTE);
 
