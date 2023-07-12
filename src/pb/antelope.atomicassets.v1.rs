@@ -143,6 +143,8 @@ pub struct Template {
     pub max_supply: u32,
     #[prost(uint32, tag="9")]
     pub issued_supply: u32,
+    #[prost(string, tag="10")]
+    pub collection_name: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -101,6 +101,7 @@ message Template {
   bool burnable = 7;
   uint32 max_supply = 8;
   uint32 issued_supply =9;
+  string collection_name = 10;
 }
 
 message Assets {

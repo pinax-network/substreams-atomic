@@ -182,6 +182,7 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
                 burnable: data.burnable.clone(),
                 max_supply: data.max_supply.clone(),
                 issued_supply: data.issued_supply.clone(),
+                collection_name: db_op.scope.clone(),
             });
         }
     }
