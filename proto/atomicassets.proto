@@ -53,7 +53,9 @@ message Schema {
 
   // database operation
   string db_operation = 3;
+
   // data payload
+  string collection_name = 6;
   string schema_name = 4;
   repeated Format format = 5;
 }

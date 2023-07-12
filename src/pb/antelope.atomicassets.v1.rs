@@ -74,6 +74,8 @@ pub struct Schema {
     #[prost(string, tag="3")]
     pub db_operation: ::prost::alloc::string::String,
     /// data payload
+    #[prost(string, tag="6")]
+    pub collection_name: ::prost::alloc::string::String,
     #[prost(string, tag="4")]
     pub schema_name: ::prost::alloc::string::String,
     #[prost(message, repeated, tag="5")]

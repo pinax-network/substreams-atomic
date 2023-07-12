@@ -241,6 +241,7 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
                 db_operation: db_operation.to_string(),
 
                 // data payload
+                collection_name: db_op.scope.clone(),
                 schema_name: data.schema_name.clone(),
                 format: format,
             });
