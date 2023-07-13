@@ -9,6 +9,7 @@ message TransferEvents {
 message TransferEvent {
   // trace information
   string trx_id = 1;
+  string timestamp = 9;
 
   // contract & scope
   // string contract = 3;
@@ -29,6 +30,7 @@ message SchemaEvents {
 message SchemaEvent {
   // trace information
   string trx_id = 1;
+  string timestamp = 6;
 
   // data payload
   string authorized_creator = 2;
@@ -50,6 +52,7 @@ message Schema {
   // trace information
   string trx_id = 1;
   uint32 action_index = 2;
+  string timestamp = 7;
 
   // database operation
   string db_operation = 3;
@@ -68,6 +71,7 @@ message Collection {
   // trace information
   string trx_id = 1;
   uint32 action_index = 2;
+  string timestamp = 10;
 
   // database operation
   string db_operation = 3;
@@ -90,8 +94,9 @@ message Template {
   // trace information
   string trx_id = 1;
   uint32 action_index = 2;
+  string timestamp = 11;
 
-  // databas operation
+  // database operation
   string db_operation = 3;
 
   // data payload
@@ -112,6 +117,7 @@ message Asset {
   // trace information
   string trx_id = 1;
   uint32 action_index = 2;
+  string timestamp = 9;
 
   // database operation
   string db_operation = 3;
@@ -152,8 +158,9 @@ message Offer {
   // trace information
   string trx_id = 1;
   uint32 action_index = 2;
- 
-  // databas operation
+  string timestamp = 11;
+
+  // database operation
   string db_operation = 3;
   
   uint64 offer_id = 4;

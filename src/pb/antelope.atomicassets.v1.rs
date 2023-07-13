@@ -11,6 +11,8 @@ pub struct TransferEvent {
     /// trace information
     #[prost(string, tag="1")]
     pub trx_id: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub timestamp: ::prost::alloc::string::String,
     // contract & scope
     // string contract = 3;
     // string action = 4;
@@ -38,6 +40,8 @@ pub struct SchemaEvent {
     /// trace information
     #[prost(string, tag="1")]
     pub trx_id: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub timestamp: ::prost::alloc::string::String,
     /// data payload
     #[prost(string, tag="2")]
     pub authorized_creator: ::prost::alloc::string::String,
@@ -70,6 +74,8 @@ pub struct Schema {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(uint32, tag="2")]
     pub action_index: u32,
+    #[prost(string, tag="7")]
+    pub timestamp: ::prost::alloc::string::String,
     /// database operation
     #[prost(string, tag="3")]
     pub db_operation: ::prost::alloc::string::String,
@@ -95,6 +101,8 @@ pub struct Collection {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(uint32, tag="2")]
     pub action_index: u32,
+    #[prost(string, tag="10")]
+    pub timestamp: ::prost::alloc::string::String,
     /// database operation
     #[prost(string, tag="3")]
     pub db_operation: ::prost::alloc::string::String,
@@ -127,7 +135,9 @@ pub struct Template {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(uint32, tag="2")]
     pub action_index: u32,
-    /// databas operation
+    #[prost(string, tag="11")]
+    pub timestamp: ::prost::alloc::string::String,
+    /// database operation
     #[prost(string, tag="3")]
     pub db_operation: ::prost::alloc::string::String,
     /// data payload
@@ -160,6 +170,8 @@ pub struct Asset {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(uint32, tag="2")]
     pub action_index: u32,
+    #[prost(string, tag="9")]
+    pub timestamp: ::prost::alloc::string::String,
     /// database operation
     #[prost(string, tag="3")]
     pub db_operation: ::prost::alloc::string::String,
@@ -216,7 +228,9 @@ pub struct Offer {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(uint32, tag="2")]
     pub action_index: u32,
-    /// databas operation
+    #[prost(string, tag="11")]
+    pub timestamp: ::prost::alloc::string::String,
+    /// database operation
     #[prost(string, tag="3")]
     pub db_operation: ::prost::alloc::string::String,
     #[prost(uint64, tag="4")]

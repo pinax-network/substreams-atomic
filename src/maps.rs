@@ -19,6 +19,7 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
                 Ok(data) => {
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
+                        timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
                         collection_name: data.collection_name,
                         from: data.from,
                         to: data.to,
@@ -55,6 +56,7 @@ fn map_schema_events(block: Block) -> Result<SchemaEvents, Error> {
                     response.push(SchemaEvent {
                         // trace information
                         trx_id: trx.id.clone(),
+                        timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
 
                         // payload
                         authorized_creator: data.authorized_creator,
@@ -110,6 +112,7 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
                 // trace information
                 trx_id: trx.id.clone(),
                 action_index: db_op.action_index,
+                timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
 
                 // db operation 
                 db_operation: db_operation.to_string(),
@@ -133,7 +136,6 @@ fn map_collections(block: Block) -> Result<Collections, Error> {
 #[substreams::handlers::map]
 fn map_templates(block: Block) -> Result<Templates, Error> {
     let mut items = vec![];
-
     for trx in block.all_transaction_traces() {
         for db_op in &trx.db_ops {
             if db_op.table_name != "templates" { continue; }
@@ -171,6 +173,7 @@ fn map_templates(block: Block) -> Result<Templates, Error> {
                 // trace information
                 trx_id: trx.id.clone(),
                 action_index: db_op.action_index,
+                timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
 
                 // db operation 
                 db_operation: db_operation.to_string(),
@@ -237,6 +240,7 @@ fn map_schemas(block: Block) -> Result<Schemas, Error> {
                 // trace information
                 trx_id: trx.id.clone(),
                 action_index: db_op.action_index,
+                timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
 
                 // db operation 
                 db_operation: db_operation.to_string(),
@@ -291,6 +295,7 @@ fn map_assets(block: Block) -> Result<Assets, Error> {
                 // trace information
                 trx_id: trx.id.clone(),
                 action_index: db_op.action_index,
+                timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
 
                 // db operation 
                 db_operation: db_operation.to_string(),
@@ -403,6 +408,7 @@ fn map_offers(block: Block) -> Result<Offers, Error> {
                 // trace information
                 trx_id: trx.id.clone(),
                 action_index: db_op.action_index,
+                timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
 
                 // db operation 
                 db_operation: db_operation.to_string(),
