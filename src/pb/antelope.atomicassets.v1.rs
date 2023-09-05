@@ -13,11 +13,10 @@ pub struct TransferEvent {
     pub trx_id: ::prost::alloc::string::String,
     #[prost(string, tag="2")]
     pub timestamp: ::prost::alloc::string::String,
-    /// contract & scope
-    #[prost(string, tag="3")]
-    pub contract: ::prost::alloc::string::String,
-    #[prost(string, tag="4")]
-    pub receiver: ::prost::alloc::string::String,
+    // contract & scope
+    // string contract = 3;
+    // string receiver = 4;
+
     /// data payload
     #[prost(string, tag="5")]
     pub collection_name: ::prost::alloc::string::String,
