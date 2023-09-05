@@ -17,6 +17,8 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
             if action_trace.name != "logtransfer" { continue; }
             match abi::Logtransfer::try_from(action_trace.json_data.as_str()) {
                 Ok(data) => {
+                    // filtering only atomicmarket related transfers
+                    if data.from != "atomicmarket" && data.to != "atomicmarket" {continue}
                     response.push(TransferEvent {
                         trx_id: trx.id.clone(),
                         timestamp: block.header.as_ref().unwrap().timestamp.as_ref().unwrap().to_string(),
@@ -24,7 +26,7 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
                         from: data.from,
                         to: data.to,
                         asset_ids: data.asset_ids,
-                        //memo: data.memo,
+                        memo: data.memo,
                     });
                 }
                 Err(_) => panic!("Failed to decode atomicassets::logtransfer"),

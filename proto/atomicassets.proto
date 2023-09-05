@@ -9,18 +9,18 @@ message TransferEvents {
 message TransferEvent {
   // trace information
   string trx_id = 1;
-  string timestamp = 9;
+  string timestamp = 2;
 
   // contract & scope
   // string contract = 3;
-  // string action = 4;
+  // string receiver = 4;
 
   // data payload
   string collection_name = 5;
   string from = 6;
   string to = 7;
   repeated uint64 asset_ids = 8;
-  //string memo = 9;
+  string memo = 9;
 }
 
 message SchemaEvents {

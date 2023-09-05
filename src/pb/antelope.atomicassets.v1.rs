@@ -11,12 +11,13 @@ pub struct TransferEvent {
     /// trace information
     #[prost(string, tag="1")]
     pub trx_id: ::prost::alloc::string::String,
-    #[prost(string, tag="9")]
+    #[prost(string, tag="2")]
     pub timestamp: ::prost::alloc::string::String,
-    // contract & scope
-    // string contract = 3;
-    // string action = 4;
-
+    /// contract & scope
+    #[prost(string, tag="3")]
+    pub contract: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub receiver: ::prost::alloc::string::String,
     /// data payload
     #[prost(string, tag="5")]
     pub collection_name: ::prost::alloc::string::String,
@@ -24,9 +25,10 @@ pub struct TransferEvent {
     pub from: ::prost::alloc::string::String,
     #[prost(string, tag="7")]
     pub to: ::prost::alloc::string::String,
-    /// string memo = 9;
     #[prost(uint64, repeated, tag="8")]
     pub asset_ids: ::prost::alloc::vec::Vec<u64>,
+    #[prost(string, tag="9")]
+    pub memo: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

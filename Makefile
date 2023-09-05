@@ -42,7 +42,7 @@ schemas: build
 
 .PHONY: transfers
 transfers: build
-	substreams run -e $(ENDPOINT) substreams.yaml map_transfers -s 317830278  -t +1
+	substreams run -e $(ENDPOINT) substreams.yaml map_transfers -s 313477147  -t +1
 
 .PHONY: assets
 assets: build
