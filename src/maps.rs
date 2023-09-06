@@ -14,7 +14,8 @@ fn map_transfers(block: Block) -> Result<TransferEvents, Error> {
         for trace in &trx.action_traces {
             let action_trace = trace.action.as_ref().unwrap();
             if action_trace.account != trace.receiver {continue}
-            if action_trace.name != "logtransfer" { continue; }
+            if action_trace.account != "atomicassets" {continue}
+            if action_trace.name != "logtransfer" { continue}
             match abi::Logtransfer::try_from(action_trace.json_data.as_str()) {
                 Ok(data) => {
                     // filtering only atomicmarket related transfers
